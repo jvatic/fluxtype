@@ -8,7 +8,7 @@ configure :development do |config|
 end
 
 get '/' do
-  haml :application
+  erb :application
 end
 
 get '/default_text' do

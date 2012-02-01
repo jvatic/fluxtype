@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <% css :reset, :application, 'http://fonts.googleapis.com/css?family=Playfair+Display&v1' %>
+    <%= css %>
+  </head>
+  <body>
+    <header id='header'>
+      <h1>FluxType</h1>
+    </header>
+
+    <section id='application'></section>
+
+    <section id='javascript'>
+      <% javascript 'https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js', 'raphael.min.js' %>
+      <% if development? %>
+        <% javascript :helpers, :constants, :keyboard, :keyboard_row, :keyboard_key, :display, :display_char, :display_observer %>
+        <script type='text/javascript'>
+          require_js = function(scripts, callback){ callback.call(null, true); }
+        </script>
+      <% else %>
+        <% javascript :require %>
+      <% end %>
+
+      <% javascript :application %>
+      <%= javascript %>
+    </section>
+  </body>
+</html>
