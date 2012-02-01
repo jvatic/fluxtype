@@ -1,0 +1,4 @@
+vendor/gems
+.sass-cache
+log/
+tmp/

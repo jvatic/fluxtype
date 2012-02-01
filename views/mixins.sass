@@ -1,0 +1,19 @@
+@mixin transparent($amount)
+  $amount: 100-$amount
+  filter: alpha(opacity=$amount) /* internet explorer */
+  -khtml-opacity: $amount/100    /* khtml, old safari */
+  -moz-opacity: $amount/100      /* mozilla, netscape */
+  opacity: $amount/100           /* fx, safari, opera */
+
+@mixin clear_transparent
+  filter: alpha(opacity=100) /* internet explorer */
+  -khtml-opacity: 1    /* khtml, old safari */
+  -moz-opacity: 1      /* mozilla, netscape */
+  opacity: 1          /* fx, safari, opera */
+
+
+@mixin rounded($amount)
+  -moz-border-radius: $amount
+  -webkit-border-radius: $amount
+  border-radius: $amount
+

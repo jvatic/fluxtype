@@ -1,0 +1,91 @@
+@import 'mixins.sass'
+
+@font-face
+  :font-family "Vag"
+  :src url(/fonts/vaground.ttf)
+
+#header
+  :width 960px
+  :margin 10px auto 0px auto
+
+  h1
+    :font-size 38px
+    :font-style italic
+    :font-family 'Playfair Display', arial, serif
+    :color darken(white, 10%)
+
+#application
+  :position relative
+  :margin auto
+  :width 960px
+
+  #display_outer_container
+    :margin-top 20px
+
+  .display_space
+    :float left
+    :padding 4px
+    :margin 1px
+    :border 1px solid darken(white, 4%)
+    :background-image url(/images/display_space.png)
+    @include transparent(60)
+
+    &.first
+      :clear both
+
+    &.display_char
+      :background darken(white, 1%)
+      @include clear_transparent
+      :text-align center
+
+      &.punctuation
+        :color darken(white, 40%)
+
+  .char
+    :float left
+    :padding 4px
+    :margin 1px
+    :border 1px solid darken(white, 10%)
+
+    :font-size 18px
+
+    &.space
+      :border-color darken(white, 4%)
+
+    &.old
+      :background-color darken(white, 4%)
+
+    &.active
+      :background-color lighten(green, 20%)
+
+  .clear
+    :clear both
+
+  .input_area
+    :clear both
+    :margin-top 20px
+    :width 500px
+    :height 260px
+
+  .keyboard
+    :width 700px
+    :margin 0 auto
+    :margin-top 20px
+    :border 4px solid darken(white, 6%)
+    :padding 2px
+    @include rounded(8px)
+    @include transparent(50)
+
+    &:hover, .active
+      @include transparent(0)
+
+    .key
+      :float left
+      :margin 5px
+      :border 1px solid darken(white, 12%)
+      :text-align center
+      :font-family "Vag"
+
+      &.active
+        :border-color darken(white, 25%)
+        :background-color darken(white, 10%)
