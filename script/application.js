@@ -2,62 +2,57 @@ var FluxType;
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 require_js({
+  underscore: true,
   helpers: true,
   constants: true,
   keyboard: true,
   keyboard_row: true,
   keyboard_key: true,
-  display: true,
-  display_char: true,
-  display_observer: true
+  page: true
 }, function(success) {
   return $(function() {
-    return $.FluxType = new FluxType($('#application'));
+    return window.flux_type = new FluxType($('#application'));
   });
 });
 
 FluxType = (function() {
 
-  function FluxType(container) {
-    this.container = container;
-    this.default_text = __bind(this.default_text, this);
-    this.draw_ui = __bind(this.draw_ui, this);
-    this.init_vars = __bind(this.init_vars, this);
-    this.init_vars();
-    this.draw_ui();
+  function FluxType($container) {
+    this.$container = $container;
+    this.defaultText = __bind(this.defaultText, this);
+    this.drawUI = __bind(this.drawUI, this);
+    this.initVars = __bind(this.initVars, this);
+    this.initVars();
+    this.drawUI();
   }
 
-  FluxType.prototype.init_vars = function() {
-    this.canvas_config = {
-      width: this.container.width(),
-      height: this.container.height(),
-      node: this.container.get(0)
-    };
+  FluxType.prototype.initVars = function() {
     return this.snipets = {};
   };
 
-  FluxType.prototype.draw_ui = function() {
-    this.display = new Display(this, {
-      width: this.container.width() - 100,
+  FluxType.prototype.drawUI = function() {
+    this.page = new Page(this, {
+      width: this.$container.width() - 100,
       height: 160,
       left: 50,
       top: 20
     });
+    return;
     return this.keyboard = new Keyboard(this, {
-      width: this.container.width() - 100,
+      width: this.$container.width() - 100,
       height: 320
     });
   };
 
-  FluxType.prototype.default_text = function(callback) {
+  FluxType.prototype.defaultText = function(callback) {
     if (this.snipets.default_text) {
-      callback.call(null, this.snipets.default_text);
+      callback(this.snipets.default_text);
     } else {
       $.ajax({
         url: '/default_text',
         success: __bind(function(text) {
           this.snipets.default_text = text;
-          return callback.call(null, text);
+          return callback(text);
         }, this)
       });
     }

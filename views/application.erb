@@ -4,16 +4,16 @@
     <%= css %>
   </head>
   <body>
-    <header id='header'>
+    <div id='header'>
       <h1>FluxType</h1>
-    </header>
+    </div>
 
-    <section id='application'></section>
+    <div id='application'></div>
 
-    <section id='javascript'>
+    <div id='javascript'>
       <% javascript 'https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js', 'raphael.min.js' %>
       <% if development? %>
-        <% javascript :helpers, :constants, :keyboard, :keyboard_row, :keyboard_key, :display, :display_char, :display_observer %>
+        <% javascript :underscore, :helpers, :constants, :keyboard, :keyboard_row, :keyboard_key, :page %>
         <script type='text/javascript'>
           require_js = function(scripts, callback){ callback.call(null, true); }
         </script>
@@ -23,6 +23,6 @@
 
       <% javascript :application %>
       <%= javascript %>
-    </section>
+    </div>
   </body>
 </html>

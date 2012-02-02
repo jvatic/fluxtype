@@ -19,44 +19,39 @@
   :margin auto
   :width 960px
 
-  #display_outer_container
+  #page-outer-container
     :margin-top 20px
 
-  .display_space
+  .page-row-space
     :float left
     :padding 4px
     :margin 1px
-    :border 1px solid darken(white, 4%)
+    :border 1px solid darken(white, 15%)
     :background-image url(/images/display_space.png)
     @include transparent(60)
 
-    &.first
-      :clear both
-
-    &.display_char
-      :background darken(white, 1%)
-      @include clear_transparent
-      :text-align center
-
-      &.punctuation
-        :color darken(white, 40%)
-
-  .char
-    :float left
-    :padding 4px
-    :margin 1px
-    :border 1px solid darken(white, 10%)
-
     :font-size 18px
 
-    &.space
+    &.empty
       :border-color darken(white, 4%)
+      :color darken(white, 40%)
 
     &.old
       :background-color darken(white, 4%)
 
     &.active
       :background-color lighten(green, 20%)
+
+    &.first
+      :clear both
+
+    &.page-row-char
+      :background darken(white, 1%)
+      @include clear_transparent
+      :text-align center
+
+      &.punctuation
+        :color darken(white, 40%)
 
   .clear
     :clear both

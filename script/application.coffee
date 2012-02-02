@@ -1,51 +1,46 @@
 require_js {
+  underscore: true
   helpers: true
   constants: true
   keyboard: true
   keyboard_row: true
   keyboard_key: true
-  display: true
-  display_char: true
-  display_observer: true
+  page: true
 }, (success)->
   $ ->
-    $.FluxType = new FluxType $('#application')
+    window.flux_type = new FluxType $('#application')
 
 class FluxType
-  constructor: (@container)->
-    @init_vars()
-    @draw_ui()
+  constructor: (@$container)->
+    @initVars()
+    @drawUI()
 
-  init_vars: =>
-    @canvas_config = {
-      width: @container.width()
-      height: @container.height()
-      node: @container.get(0)
-    }
-
+  initVars: =>
     @snipets = {}
 
-  draw_ui: =>
-    @display  = new Display this, {
-      width: @container.width() - 100
+  drawUI: =>
+    @page = new Page this, {
+      width: @$container.width() - 100
       height: 160
       left: 50
       top: 20
     }
+    return
 
     @keyboard = new Keyboard this, {
-      width: @container.width() - 100
+      width: @$container.width() - 100
       height: 320
     }
 
-  default_text: (callback)=>
+  defaultText: (callback)=>
     if @snipets.default_text
-      callback.call null, @snipets.default_text
+      callback @snipets.default_text
     else
       $.ajax {
         url: '/default_text'
         success: (text)=>
           @snipets.default_text = text
-          callback.call null, text
+          callback text
       }
     null
+
