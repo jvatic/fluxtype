@@ -1,6 +1,5 @@
 require_js {
   underscore: true
-  helpers: true
   constants: true
   keyboard: true
   page: true

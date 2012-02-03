@@ -3,7 +3,6 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
 require_js({
   underscore: true,
-  helpers: true,
   constants: true,
   keyboard: true,
   page: true,

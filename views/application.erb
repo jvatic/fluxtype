@@ -13,7 +13,7 @@
     <div id='javascript'>
       <% javascript 'https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js', 'raphael.min.js' %>
       <% if development? %>
-        <% javascript :underscore, :helpers, :constants, :keyboard, :page, :status, :manager %>
+        <% javascript :underscore, :constants, :keyboard, :page, :status, :manager %>
         <script type='text/javascript'>
           require_js = function(scripts, callback){ callback.call(null, true); }
         </script>
