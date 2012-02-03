@@ -126,6 +126,13 @@ class Page
           @page.rows[@row.index+1].space_index += 1
 
       match: (charCode)=>
+        if @miss_space
+          console.log charCode
+          if charCode == 8 || charCode == 48 # backspace or delete
+            @miss_space.$element.remove()
+            @miss_space = undefined
+          return
+
         if @char
           @char.code == charCode
         else
@@ -144,11 +151,27 @@ class Page
         console.log [charCode, @char_codes]
         @$element.addClass 'miss'
 
+        @miss_space ||= new Page.Row.Space.MissSpace this
+        @miss_space.set String.fromCharCode(charCode)
+
       isFirst: =>
         @$element.addClass 'first'
 
       isLast: =>
         @char_codes.push "\r".charCodeAt(0)
+
+      class @MissSpace
+        constructor: (@space)->
+          @$element = ($ "<div class='page-row-miss-space'>&nbsp;</div>").appendTo @space.page.$container
+          @$element.css
+            position: 'absolute'
+            top: @space.$element.position().top+1
+            left: @space.$element.position().left+1
+            width: @space.$element.width()
+            height: @space.$element.height()
+
+        set: (text)=>
+          @$element.text text
 
   class @Word
     constructor: (@page, @text)->

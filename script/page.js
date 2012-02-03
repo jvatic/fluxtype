@@ -183,6 +183,14 @@ Page = (function() {
       };
 
       Space.prototype.match = function(charCode) {
+        if (this.miss_space) {
+          console.log(charCode);
+          if (charCode === 8 || charCode === 48) {
+            this.miss_space.$element.remove();
+            this.miss_space = void 0;
+          }
+          return;
+        }
         if (this.char) {
           return this.char.code === charCode;
         } else {
@@ -204,7 +212,9 @@ Page = (function() {
 
       Space.prototype.miss = function(charCode) {
         console.log([charCode, this.char_codes]);
-        return this.$element.addClass('miss');
+        this.$element.addClass('miss');
+        this.miss_space || (this.miss_space = new Page.Row.Space.MissSpace(this));
+        return this.miss_space.set(String.fromCharCode(charCode));
       };
 
       Space.prototype.isFirst = function() {
@@ -215,9 +225,32 @@ Page = (function() {
         return this.char_codes.push("\r".charCodeAt(0));
       };
 
+      Space.MissSpace = (function() {
+
+        function MissSpace(space) {
+          this.space = space;
+          this.set = __bind(this.set, this);
+          this.$element = ($("<div class='page-row-miss-space'>&nbsp;</div>")).appendTo(this.space.page.$container);
+          this.$element.css({
+            position: 'absolute',
+            top: this.space.$element.position().top + 1,
+            left: this.space.$element.position().left + 1,
+            width: this.space.$element.width(),
+            height: this.space.$element.height()
+          });
+        }
+
+        MissSpace.prototype.set = function(text) {
+          return this.$element.text(text);
+        };
+
+        return MissSpace;
+
+      })();
+
       return Space;
 
-    })();
+    }).call(this);
 
     return Row;
 

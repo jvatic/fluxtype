@@ -22,6 +22,15 @@
   #page-outer-container
     :margin-top 20px
 
+  .page-row-miss-space
+    :padding 4px
+    :border 1px solid darken(white, 15%)
+    :background darken(white, 1%)
+    :border-color lighten(red, 20%)
+    :text-align center
+    :font-weight bold
+    :color lighten(red, 10%)
+
   .page-row-space
     :float left
     :padding 4px
@@ -47,9 +56,6 @@
 
     &.active
       :border-color lighten(green, 20%)
-
-      &.miss
-        :border-color lighten(red, 20%)
 
     &.first
       :clear both
