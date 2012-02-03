@@ -6,6 +6,7 @@ require_js {
   keyboard_row: true
   keyboard_key: true
   page: true
+  manager: true
 }, (success)->
   $ ->
     window.flux_type = new FluxType $('#application')
@@ -25,6 +26,9 @@ class FluxType
       left: 50
       top: 20
     }
+
+    @manager = new Manager this
+
     return
 
     @keyboard = new Keyboard this, {

@@ -18,9 +18,23 @@ class Page
 
     @_initText()
 
+  nextSpace: =>
+    @current_space.deselect()
+
+    space = @current_space
+    next = space.row.spaces[space.index+1]
+    if next_row = @rows[space.row.index+1]
+      next = _.first(next_row.spaces) unless next
+    return @drawText() unless next
+
+    @current_space = next
+    @nextSpace() unless @current_space.typeable
+
+    @current_space.select()
+
   resetRows: =>
     _.each @rows, (row)=> row.destroy()
-    @rows = _.map [0..@config.num_rows], => new Page.Row this
+    @rows = _.map [0..@config.num_rows], (index)=> new Page.Row this, index
 
   drawText: =>
     @resetRows()
@@ -31,7 +45,14 @@ class Page
           row.push word.chars...
           @word_index += 1
         else
+          last_space = row.spaces[row.space_index-1]
+          last_space.isLast() if last_space
+          _.each _.rest(row.spaces, row.space_index), (space)=> space.setEmpty()
           break
+
+    @current_space = _.first(_.first(@rows).spaces)
+    @nextSpace() unless @current_space.typeable
+    @current_space.select()
 
   _initText: (text)=>
     unless text
@@ -62,8 +83,8 @@ class Page
     @$container = ($ "##{element_id_index.container}")
 
   class @Row
-    constructor: (@page)->
-      @spaces = _.map [0..@page.config.num_columns], => new Page.Row.Space @page, this
+    constructor: (@page, @index)->
+      @spaces = _.map [0..@page.config.num_columns], (index)=> new Page.Row.Space @page, this, index
       (_.first @spaces).isFirst()
 
       @space_index = 0
@@ -78,21 +99,56 @@ class Page
       _.each @spaces, (space)=> space.$element.remove()
 
     class @Space
-      constructor: (@page, @row)->
-        @$element = ($ "<div class='page-row-space empty'>&nbsp;</div>").appendTo @page.$container
+      constructor: (@page, @row, @index)->
+        @$element = ($ "<div class='page-row-space space'>&nbsp;</div>").appendTo @page.$container
 
         @$element.css
           width: @page.config.font_size
 
+        @typeable = true
+
+        @char_codes = [" ".charCodeAt(0)]
+
+      setEmpty: =>
+        @typeable = false
+        @$element.removeClass 'space'
+        @$element.addClass 'empty'
+
       set: (@char)=>
         @$element.text @char.text
         @$element.addClass 'page-row-char'
+        @$element.removeClass 'space'
 
-        if @char.typeable
-          @$element.removeClass 'empty'
+        @typeable = @char.typeable
+
+        # if row ends in a non-space, prepend a space to the next
+        if @index == @row.spaces.length-1 && @page.rows[@row.index+1]
+          @page.rows[@row.index+1].space_index += 1
+
+      match: (charCode)=>
+        if @char
+          @char.code == charCode
+        else
+          _.include @char_codes, charCode
+
+      select: =>
+        @$element.addClass 'active'
+
+      deselect: =>
+        @$element.removeClass 'active'
+
+      hit: =>
+        @$element.addClass 'hit'
+
+      miss: (charCode)=>
+        console.log [charCode, @char_codes]
+        @$element.addClass 'miss'
 
       isFirst: =>
         @$element.addClass 'first'
+
+      isLast: =>
+        @char_codes.push "\r".charCodeAt(0)
 
   class @Word
     constructor: (@page, @text)->
@@ -102,3 +158,4 @@ class Page
       @TYPEABLE_MATCHER = /^[-a-z0-9_~`!@#$%^&*\(\)-+=\|\\\}\{\[\]"':;?\/><,.\s\t]$/i
       constructor: (@page, @word, @text)->
         @typeable = @text.match(Page.Word.Char.TYPEABLE_MATCHER) != null
+        @code = @text.charCodeAt(0)

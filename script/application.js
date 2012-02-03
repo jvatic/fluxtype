@@ -8,7 +8,8 @@ require_js({
   keyboard: true,
   keyboard_row: true,
   keyboard_key: true,
-  page: true
+  page: true,
+  manager: true
 }, function(success) {
   return $(function() {
     return window.flux_type = new FluxType($('#application'));
@@ -37,6 +38,7 @@ FluxType = (function() {
       left: 50,
       top: 20
     });
+    this.manager = new Manager(this);
     return;
     return this.keyboard = new Keyboard(this, {
       width: this.$container.width() - 100,

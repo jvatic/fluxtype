@@ -36,11 +36,20 @@
       :border-color darken(white, 4%)
       :color darken(white, 40%)
 
+    &.space
+      :background darken(white, 1%)
+
+    &.hit
+      :border-color lighten(green, 70%)
+
     &.old
       :background-color darken(white, 4%)
 
     &.active
-      :background-color lighten(green, 20%)
+      :border-color lighten(green, 20%)
+
+      &.miss
+        :border-color lighten(red, 20%)
 
     &.first
       :clear both
@@ -49,9 +58,6 @@
       :background darken(white, 1%)
       @include clear_transparent
       :text-align center
-
-      &.punctuation
-        :color darken(white, 40%)
 
   .clear
     :clear both
