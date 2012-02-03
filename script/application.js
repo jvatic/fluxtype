@@ -22,14 +22,8 @@ FluxType = (function() {
     this.$container = $container;
     this.defaultText = __bind(this.defaultText, this);
     this.drawUI = __bind(this.drawUI, this);
-    this.initVars = __bind(this.initVars, this);
-    this.initVars();
     this.drawUI();
   }
-
-  FluxType.prototype.initVars = function() {
-    return this.snipets = {};
-  };
 
   FluxType.prototype.drawUI = function() {
     this.page = new Page(this, {
@@ -38,26 +32,20 @@ FluxType = (function() {
       left: 50,
       top: 20
     });
-    this.manager = new Manager(this);
-    return this.keyboard = new Keyboard(this, {
+    this.keyboard = new Keyboard(this, {
       width: this.$container.width() - 100,
       height: 320
     });
+    return this.manager = new Manager(this);
   };
 
   FluxType.prototype.defaultText = function(callback) {
-    if (this.snipets.default_text) {
-      callback(this.snipets.default_text);
-    } else {
-      $.ajax({
-        url: '/default_text',
-        success: __bind(function(text) {
-          this.snipets.default_text = text;
-          return callback(text);
-        }, this)
-      });
-    }
-    return null;
+    return $.ajax({
+      url: '/default_text',
+      success: __bind(function(text) {
+        return callback(text);
+      }, this)
+    });
   };
 
   return FluxType;

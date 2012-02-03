@@ -13,11 +13,7 @@ require_js {
 
 class FluxType
   constructor: (@$container)->
-    @initVars()
     @drawUI()
-
-  initVars: =>
-    @snipets = {}
 
   drawUI: =>
     @page = new Page this, {
@@ -27,22 +23,17 @@ class FluxType
       top: 20
     }
 
-    @manager = new Manager this
-
     @keyboard = new Keyboard this, {
       width: @$container.width() - 100
       height: 320
     }
 
+    @manager = new Manager this
+
   defaultText: (callback)=>
-    if @snipets.default_text
-      callback @snipets.default_text
-    else
-      $.ajax {
-        url: '/default_text'
-        success: (text)=>
-          @snipets.default_text = text
-          callback text
-      }
-    null
+    $.ajax {
+      url: '/default_text'
+      success: (text)=>
+        callback text
+    }
 
