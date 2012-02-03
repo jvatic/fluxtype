@@ -177,6 +177,7 @@ Page = (function() {
         this.$element.addClass('page-row-char');
         this.$element.removeClass('space');
         this.typeable = this.char.typeable;
+        if (!this.typeable) this.$element.addClass('skip');
         if (this.index === this.row.spaces.length - 1 && this.page.rows[this.row.index + 1]) {
           return this.page.rows[this.row.index + 1].space_index += 1;
         }
@@ -184,12 +185,11 @@ Page = (function() {
 
       Space.prototype.match = function(charCode) {
         if (this.miss_space) {
-          console.log(charCode);
           if (charCode === 8 || charCode === 48) {
             this.miss_space.$element.remove();
             this.miss_space = void 0;
           }
-          return;
+          return false;
         }
         if (this.char) {
           return this.char.code === charCode;
@@ -211,7 +211,6 @@ Page = (function() {
       };
 
       Space.prototype.miss = function(charCode) {
-        console.log([charCode, this.char_codes]);
         this.$element.addClass('miss');
         this.miss_space || (this.miss_space = new Page.Row.Space.MissSpace(this));
         return this.miss_space.set(String.fromCharCode(charCode));

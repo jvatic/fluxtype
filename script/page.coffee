@@ -121,17 +121,19 @@ class Page
 
         @typeable = @char.typeable
 
+        unless @typeable
+          @$element.addClass 'skip'
+
         # if row ends in a non-space, prepend a space to the next
         if @index == @row.spaces.length-1 && @page.rows[@row.index+1]
           @page.rows[@row.index+1].space_index += 1
 
       match: (charCode)=>
         if @miss_space
-          console.log charCode
           if charCode == 8 || charCode == 48 # backspace or delete
             @miss_space.$element.remove()
             @miss_space = undefined
-          return
+          return false
 
         if @char
           @char.code == charCode
@@ -148,7 +150,6 @@ class Page
         @$element.addClass 'hit'
 
       miss: (charCode)=>
-        console.log [charCode, @char_codes]
         @$element.addClass 'miss'
 
         @miss_space ||= new Page.Row.Space.MissSpace this
