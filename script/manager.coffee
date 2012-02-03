@@ -6,7 +6,6 @@ class Manager
     ($ window).bind 'keydown', @processSpecialKey
 
   processKey: (e)=>
-    console.log e.keyCode
     space = @base.page.current_space
     if space && space.match(e.charCode)
       space.hit()

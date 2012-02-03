@@ -15,7 +15,6 @@ Manager = (function() {
 
   Manager.prototype.processKey = function(e) {
     var space;
-    console.log(e.keyCode);
     space = this.base.page.current_space;
     if (space && space.match(e.charCode)) {
       space.hit();
