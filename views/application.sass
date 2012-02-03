@@ -82,14 +82,15 @@
     &.space
       :background darken(white, 1%)
 
+      &.hit
+        :background-color black
+        @include clear_transparent
+
     &.hit
-      :border-color lighten(green, 70%)
+      :border-color darken(white, 10%)
 
     &.miss
-      :border-color lighten(red, 40%)
-
-    &.old
-      :background-color darken(white, 4%)
+      :border-color lighten(red, 30%)
 
     &.active
       :border-color lighten(green, 20%)
@@ -104,6 +105,10 @@
 
       &.skip
         @include transparent(60)
+
+      &.hit
+        :background-color black
+        :color darken(white, 5%)
 
   .clear
     :clear both
