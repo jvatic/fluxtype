@@ -57,7 +57,7 @@ Page = (function() {
 
   Page.prototype.drawText = function() {
     this.resetRows();
-    if (this.word_index >= this.words.length) this.word_index = 0;
+    if (this.word_index >= this.words.length) return this._initText();
     _.each(this.rows, __bind(function(row, row_index) {
       var last_space, word, word_index, _len, _ref, _results;
       _ref = _.rest(this.words, this.word_index);
@@ -70,9 +70,6 @@ Page = (function() {
         } else {
           last_space = row.spaces[row.space_index - 1];
           if (last_space) last_space.isLast();
-          _.each(_.rest(row.spaces, row.space_index), __bind(function(space) {
-            return space.setEmpty();
-          }, this));
           break;
         }
       }
@@ -127,12 +124,20 @@ Page = (function() {
     }
 
     Row.prototype.push = function() {
-      var chars;
+      var chars, next_row;
       chars = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       _.each(chars, __bind(function(char, char_index) {
         this.spaces[this.space_index].set(char);
         return this.space_index += 1;
       }, this));
+      if (this.spaces[this.space_index]) {
+        this.spaces[this.space_index].setSpace();
+      } else {
+        if (next_row = this.page.rows[this.index + 1]) {
+          next_row.spaces[next_row.space_index].setSpace();
+          next_row.space_index += 1;
+        }
+      }
       return this.space_index += 1;
     };
 
@@ -156,31 +161,29 @@ Page = (function() {
         this.select = __bind(this.select, this);
         this.match = __bind(this.match, this);
         this.set = __bind(this.set, this);
-        this.setEmpty = __bind(this.setEmpty, this);
-        this.$element = ($("<div class='page-row-space space'>&nbsp;</div>")).appendTo(this.page.$container);
+        this.setSpace = __bind(this.setSpace, this);
+        this.$element = ($("<div class='page-row-space empty'>&nbsp;</div>")).appendTo(this.page.$container);
         this.$element.css({
           width: this.page.config.font_size
         });
-        this.typeable = true;
         this.char_codes = [" ".charCodeAt(0)];
+        this.typeable = false;
       }
 
-      Space.prototype.setEmpty = function() {
-        this.typeable = false;
-        this.$element.removeClass('space');
-        return this.$element.addClass('empty');
+      Space.prototype.setSpace = function() {
+        this.typeable = true;
+        this.$element.html("&nbsp;");
+        this.$element.removeClass('empty');
+        return this.$element.addClass('space');
       };
 
       Space.prototype.set = function(char) {
         this.char = char;
         this.$element.text(this.char.text);
         this.$element.addClass('page-row-char');
-        this.$element.removeClass('space');
+        this.$element.removeClass('empty');
         this.typeable = this.char.typeable;
-        if (!this.typeable) this.$element.addClass('skip');
-        if (this.index === this.row.spaces.length - 1 && this.page.rows[this.row.index + 1]) {
-          return this.page.rows[this.row.index + 1].space_index += 1;
-        }
+        if (!this.typeable) return this.$element.addClass('skip');
       };
 
       Space.prototype.match = function(charCode) {
@@ -227,13 +230,20 @@ Page = (function() {
       Space.MissSpace = (function() {
 
         function MissSpace(space) {
+          var left, next_space, top;
           this.space = space;
           this.set = __bind(this.set, this);
           this.$element = ($("<div class='page-row-miss-space'>&nbsp;</div>")).appendTo(this.space.page.$container);
+          next_space = this.space.row.spaces[this.space.index + 1];
+          if (!next_space) {
+            next_space = _.first((this.space.page.rows[this.space.row.index + 1] || {}).spaces || []);
+          }
+          top = (next_space || this.space).$element.position().top + 1;
+          left = (next_space || this.space).$element.position().left + 1;
           this.$element.css({
             position: 'absolute',
-            top: this.space.$element.position().top + 1,
-            left: this.space.$element.position().left + 1,
+            top: top,
+            left: left,
             width: this.space.$element.width(),
             height: this.space.$element.height()
           });

@@ -38,7 +38,7 @@ class Page
 
   drawText: =>
     @resetRows()
-    @word_index = 0 if @word_index >= @words.length
+    return @_initText() if @word_index >= @words.length
     _.each @rows, (row, row_index)=>
       for word, word_index in (_.rest @words, @word_index)
         if _.rest(row.spaces, row.space_index).length >= word.chars.length
@@ -47,7 +47,6 @@ class Page
         else
           last_space = row.spaces[row.space_index-1]
           last_space.isLast() if last_space
-          _.each _.rest(row.spaces, row.space_index), (space)=> space.setEmpty()
           break
 
     @current_space = _.first(_.first(@rows).spaces)
@@ -93,6 +92,12 @@ class Page
       _.each chars, (char, char_index)=>
         @spaces[@space_index].set char
         @space_index += 1
+      if @spaces[@space_index]
+        @spaces[@space_index].setSpace()
+      else
+        if next_row = @page.rows[@index+1]
+          next_row.spaces[next_row.space_index].setSpace()
+          next_row.space_index += 1
       @space_index += 1
 
     destroy: =>
@@ -100,33 +105,30 @@ class Page
 
     class @Space
       constructor: (@page, @row, @index)->
-        @$element = ($ "<div class='page-row-space space'>&nbsp;</div>").appendTo @page.$container
+        @$element = ($ "<div class='page-row-space empty'>&nbsp;</div>").appendTo @page.$container
 
         @$element.css
           width: @page.config.font_size
 
-        @typeable = true
-
         @char_codes = [" ".charCodeAt(0)]
 
-      setEmpty: =>
         @typeable = false
-        @$element.removeClass 'space'
-        @$element.addClass 'empty'
+
+      setSpace: =>
+        @typeable = true
+        @$element.html "&nbsp;"
+        @$element.removeClass 'empty'
+        @$element.addClass 'space'
 
       set: (@char)=>
         @$element.text @char.text
         @$element.addClass 'page-row-char'
-        @$element.removeClass 'space'
+        @$element.removeClass 'empty'
 
         @typeable = @char.typeable
 
         unless @typeable
           @$element.addClass 'skip'
-
-        # if row ends in a non-space, prepend a space to the next
-        if @index == @row.spaces.length-1 && @page.rows[@row.index+1]
-          @page.rows[@row.index+1].space_index += 1
 
       match: (charCode)=>
         if @miss_space
@@ -164,10 +166,16 @@ class Page
       class @MissSpace
         constructor: (@space)->
           @$element = ($ "<div class='page-row-miss-space'>&nbsp;</div>").appendTo @space.page.$container
+
+          next_space = @space.row.spaces[@space.index+1]
+          next_space = _.first( (@space.page.rows[@space.row.index+1] || {}).spaces || [] ) unless next_space
+          top  = (next_space || @space).$element.position().top+1
+          left = (next_space || @space).$element.position().left+1
+
           @$element.css
             position: 'absolute'
-            top: @space.$element.position().top+1
-            left: @space.$element.position().left+1
+            top: top
+            left: left
             width: @space.$element.width()
             height: @space.$element.height()
 
