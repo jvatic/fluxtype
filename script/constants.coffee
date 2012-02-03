@@ -8,6 +8,13 @@ KEYS = {
   UP: 38
   RIGHT: 39
   DOWN: 40
+  CAPSLOCK: 20
+  SHIFT: 16
+  CONTROL: 17
+  OPTION: 18
+  COMMAND: 91
 }
 
-
+TOUCHY_KEYS = [
+  KEYS.TAB
+]

@@ -3,8 +3,6 @@ require_js {
   helpers: true
   constants: true
   keyboard: true
-  keyboard_row: true
-  keyboard_key: true
   page: true
   manager: true
 }, (success)->
