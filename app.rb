@@ -13,7 +13,8 @@ end
 
 get '/default_text' do
   content_type "text/plain"
-  File.read( File.join( APP_ROOT, 'lib', 'default_text.txt' ) )
+  text = Lipsum.new.paragraphs[2].to_s
+  text = text.slice(57, text.length)
 end
 
 get '*.js' do
