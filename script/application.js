@@ -39,7 +39,6 @@ FluxType = (function() {
       top: 20
     });
     this.manager = new Manager(this);
-    return;
     return this.keyboard = new Keyboard(this, {
       width: this.$container.width() - 100,
       height: 320

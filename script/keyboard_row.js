@@ -8,17 +8,16 @@ KeyboardRow = (function() {
     this.row = row;
     this.index = index;
     this.processCode = __bind(this.processCode, this);
-    this.container = this.keyboard.container;
-    this.shiftedKeys = this.keyboard.shiftedKeys[this.index];
-    this.observer = this.keyboard.observer;
-    this.keys = this.row.map(__bind(function(key, index) {
+    this.$container = this.keyboard.$container;
+    this.shifted_keys = this.keyboard.shifted_keys[this.index];
+    this.keys = _.map(this.row, __bind(function(key, index) {
       return new KeyboardKey(this, key, index);
     }, this));
-    $("<div class='clear'></div>").insertAfter(this.keys.last().element);
+    $("<div class='clear'></div>").insertAfter(_.last(this.keys).element);
   }
 
   KeyboardRow.prototype.processCode = function(codes, e) {
-    return this.keys.each(__bind(function(key) {
+    return _.each(this.keys, __bind(function(key) {
       return key.processCode(codes, e);
     }, this));
   };

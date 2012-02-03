@@ -1,14 +1,12 @@
 class KeyboardRow
   constructor: (@keyboard, @row, @index)->
-    @container = @keyboard.container
-    @shiftedKeys = @keyboard.shiftedKeys[@index]
+    @$container = @keyboard.$container
+    @shifted_keys = @keyboard.shifted_keys[@index]
 
-    @observer = @keyboard.observer
+    @keys = _.map @row, (key, index)=> new KeyboardKey(this, key, index)
 
-    @keys = @row.map (key, index)=> new KeyboardKey(this, key, index)
-
-    $("<div class='clear'></div>").insertAfter(@keys.last().element)
+    $("<div class='clear'></div>").insertAfter(_.last(@keys).element)
 
   processCode: (codes, e)=>
-    @keys.each (key)=> key.processCode(codes, e)
+    _.each @keys, (key)=> key.processCode(codes, e)
 

@@ -28,13 +28,12 @@ KeyboardKey = (function() {
   KeyboardKey.prototype.init_vars = function() {
     var code, keys, _ref, _ref2, _results;
     this.keyboard = this.row.keyboard;
-    this.shiftedKey = this.row.shiftedKeys[this.index] || this.key;
-    this.observer = this.row.observer;
-    this.container = this.row.container;
+    this.shifted_key = this.row.shifted_keys[this.index] || this.key;
+    this.$container = this.row.$container;
     this.html = "<div class='key'>" + this.key + "</div>";
-    this.element = $(this.html).appendTo(this.container);
+    this.element = $(this.html).appendTo(this.$container);
     if (this.key && this.key.length === 1) {
-      this.charCodes = [this.key.charCodeAt(0), this.shiftedKey.charCodeAt(0)];
+      this.charCodes = [this.key.charCodeAt(0), this.shifted_key.charCodeAt(0)];
     } else {
       this.charCodes = [];
     }
@@ -42,13 +41,13 @@ KeyboardKey = (function() {
     _ref = this.keyboard.key_codes;
     for (code in _ref) {
       keys = _ref[code];
-      if (keys.include(this.key)) this.keyCodes.push(parseInt(code));
+      if (_.include(keys, this.key)) this.keyCodes.push(parseInt(code));
     }
     _ref2 = this.keyboard.char_codes;
     _results = [];
     for (code in _ref2) {
       keys = _ref2[code];
-      if (keys.include(this.key)) {
+      if (_.include(keys, this.key)) {
         _results.push(this.charCodes.push(parseInt(code)));
       } else {
         _results.push(void 0);
@@ -88,15 +87,15 @@ KeyboardKey = (function() {
   };
 
   KeyboardKey.prototype.width = function() {
-    return this.ratio().first() * this.keyboard.scale;
+    return _.first(this.ratio()) * this.keyboard.scale;
   };
 
   KeyboardKey.prototype.height = function() {
-    return this.ratio().last() * this.keyboard.scale;
+    return _.last(this.ratio()) * this.keyboard.scale;
   };
 
   KeyboardKey.prototype.fontSize = function() {
-    return (this.height() / this.fontRatio().first()) * this.fontRatio().last();
+    return (this.height() / _.first(this.fontRatio())) * _.last(this.fontRatio());
   };
 
   KeyboardKey.prototype.init_keys = function() {
@@ -114,14 +113,13 @@ KeyboardKey = (function() {
   };
 
   KeyboardKey.prototype.match_codes = function(charCode, keyCode) {
-    return this.charCodes.include(charCode) || this.keyCodes.include(keyCode);
+    return (_.include(this.charCodes, charCode)) || (_.include(this.keyCodes, keyCode));
   };
 
   KeyboardKey.prototype.processCode = function(codes) {
     var charCode, keyCode;
     charCode = codes[0], keyCode = codes[1];
-    if (this.keyCodes.merge(this.charCodes).include(codes) && !(keyCode === 91)) {
-      if (this.key === 'tab') this.observer.prevent_defaults(e);
+    if ((_.include(this.keyCodes.merge(this.charCodes), codes)) && !(keyCode === 91)) {
       return this.select();
     } else {
       return this.deselect();

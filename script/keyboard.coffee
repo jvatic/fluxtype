@@ -1,18 +1,12 @@
 class Keyboard
-  constructor: (@app, @options)->
-    @init_options()
-    @init_vars()
-
-  init_options: =>
-    @options = $.extend {
-      # default options
+  constructor: (@app, @config)->
+    @config = $.extend {
+      # default config
       width: 700
       height: 320
-    }, @options
+    }, @config
 
-  init_vars: =>
-    @container = $("<div class='keyboard'></div>").appendTo @app.container
-    @observer = @app.display.observer
+    @$container = $("<div class='keyboard'></div>").appendTo @app.$container
 
     @key_types = [
       { type: 'default',    ratio: "9:10",      fontRatio: "15:7" },
@@ -28,23 +22,23 @@ class Keyboard
 
     @scale = 4.0
 
-    @keys = [] # charCode pairs => regular, shift
-    @shiftedKeys = []
+    @keys = []
+    @shifted_keys = []
 
-    @keys.push        ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'delete']
-    @shiftedKeys.push ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 'delete']
+    @keys.push         ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'delete']
+    @shifted_keys.push ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 'delete']
 
-    @keys.push        ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\']
-    @shiftedKeys.push ['tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '|']
+    @keys.push         ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\']
+    @shifted_keys.push ['tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '|']
 
-    @keys.push        ['caps lock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'return']
-    @shiftedKeys.push ['caps lock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"', 'return']
+    @keys.push         ['caps lock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'return']
+    @shifted_keys.push ['caps lock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"', 'return']
 
-    @keys.push        ['shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'shift']
-    @shiftedKeys.push ['shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 'shift']
+    @keys.push         ['shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'shift']
+    @shifted_keys.push ['shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 'shift']
 
-    @keys.push        ['fn', 'control', 'option', 'command', 'space', 'command', 'option']
-    @shiftedKeys.push @keys.last()
+    @keys.push         ['fn', 'control', 'option', 'command', 'space', 'command', 'option']
+    @shifted_keys.push _.last @keys
 
     @key_codes = {
       61: ['=']
@@ -65,14 +59,14 @@ class Keyboard
       8217: ['\'']
     }
 
-    @rows = @keys.map (row, index)=> new KeyboardRow(this, row, index)
+    @rows = _.map @keys, (row, index)=> new KeyboardRow(this, row, index)
 
   processCode: (codes, e)=>
-    @rows.each (row)=> row.processCode(codes, e)
+    _.each @rows, (row)=> row.processCode(codes, e)
 
   shift: =>
-    @rows.each (row)=> row.keys.each (key)=> key.shift()
+    _.each @rows, (row)=> row.keys.each (key)=> key.shift()
 
   unShift: =>
-    @rows.each (row)=> row.keys.each (key)=> key.unShift()
+    _.each @rows, (row)=> row.keys.each (key)=> key.unShift()
 

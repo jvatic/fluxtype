@@ -29,8 +29,6 @@ class FluxType
 
     @manager = new Manager this
 
-    return
-
     @keyboard = new Keyboard this, {
       width: @$container.width() - 100
       height: 320

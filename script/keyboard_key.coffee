@@ -5,26 +5,24 @@ class KeyboardKey
 
   init_vars: =>
     @keyboard = @row.keyboard
-    @shiftedKey = @row.shiftedKeys[@index] || @key
+    @shifted_key = @row.shifted_keys[@index] || @key
 
-    @observer = @row.observer
-
-    @container = @row.container
+    @$container = @row.$container
     @html = "<div class='key'>#{@key}</div>"
-    @element = $(@html).appendTo @container
+    @element = $(@html).appendTo @$container
 
     if @key and @key.length == 1
-      @charCodes = [@key.charCodeAt(0), @shiftedKey.charCodeAt(0)]
+      @charCodes = [@key.charCodeAt(0), @shifted_key.charCodeAt(0)]
     else
       @charCodes = []
 
     @keyCodes = []
 
     for code, keys of @keyboard.key_codes
-      @keyCodes.push parseInt(code) if keys.include(@key)
+      @keyCodes.push parseInt(code) if _.include(keys, @key)
 
     for code, keys of @keyboard.char_codes
-      @charCodes.push parseInt(code) if keys.include(@key)
+      @charCodes.push parseInt(code) if _.include(keys, @key)
 
   keyType: =>
     return @type if @type
@@ -43,13 +41,13 @@ class KeyboardKey
     r = r.split(':').map (i)=> parseFloat(i)
 
   width: =>
-    @ratio().first() * @keyboard.scale
+    _.first(@ratio()) * @keyboard.scale
 
   height: =>
-    @ratio().last() * @keyboard.scale
+    _.last(@ratio()) * @keyboard.scale
 
   fontSize: =>
-    ( @height() / @fontRatio().first() ) * @fontRatio().last()
+    ( @height() / _.first(@fontRatio()) ) * _.last(@fontRatio())
 
   init_keys: =>
     @element.css {
@@ -65,13 +63,11 @@ class KeyboardKey
       @shiftedKey = ''
 
   match_codes: (charCode, keyCode)=>
-    @charCodes.include(charCode) or @keyCodes.include(keyCode)
+    (_.include @charCodes, charCode) or (_.include @keyCodes, keyCode)
 
   processCode: (codes)=>
     [charCode, keyCode] = codes
-    if @keyCodes.merge(@charCodes).include(codes) and not( keyCode == 91 )
-      if @key == 'tab'
-        @observer.prevent_defaults(e)
+    if (_.include @keyCodes.merge(@charCodes), codes) and not( keyCode == 91 )
       @select()
     else
       @deselect()
