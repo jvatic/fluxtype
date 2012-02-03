@@ -130,7 +130,7 @@ class Page
 
       match: (charCode)=>
         if @miss_space
-          if charCode == 8 || charCode == 48 # backspace or delete
+          if charCode == KEYS.BACKSPACE
             @miss_space.$element.remove()
             @miss_space = undefined
           return false

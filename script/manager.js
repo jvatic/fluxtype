@@ -3,7 +3,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
 Manager = (function() {
 
-  Manager.SPECIAL_KEYS = [8, 48];
+  Manager.SPECIAL_KEYS = [KEYS.BACKSPACE];
 
   function Manager(base) {
     this.base = base;

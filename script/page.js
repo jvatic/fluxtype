@@ -185,7 +185,7 @@ Page = (function() {
 
       Space.prototype.match = function(charCode) {
         if (this.miss_space) {
-          if (charCode === 8 || charCode === 48) {
+          if (charCode === KEYS.BACKSPACE) {
             this.miss_space.$element.remove();
             this.miss_space = void 0;
           }

@@ -1,5 +1,5 @@
 class Manager
-  @SPECIAL_KEYS = [8, 48]
+  @SPECIAL_KEYS = [KEYS.BACKSPACE]
 
   constructor: (@base)->
     ($ window).bind 'keypress', @processKey
