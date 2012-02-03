@@ -22,9 +22,11 @@ Manager = (function() {
     space = this.base.page.current_space;
     if (space && space.match(e.charCode)) {
       space.hit();
-      return this.base.page.nextSpace();
+      this.base.page.nextSpace();
+      return this.base.status.recordHit(space);
     } else {
-      return space.miss(e.charCode);
+      space.miss(e.charCode);
+      return this.base.status.recordMiss(space);
     }
   };
 

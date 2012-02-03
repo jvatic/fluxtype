@@ -18,8 +18,10 @@ class Manager
     if space && space.match(e.charCode)
       space.hit()
       @base.page.nextSpace()
+      @base.status.recordHit space
     else
       space.miss(e.charCode)
+      @base.status.recordMiss space
 
   processKeyDown: (e)=>
     @base.keyboard.selectKey e.charCode, e.keyCode

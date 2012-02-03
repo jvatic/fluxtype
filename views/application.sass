@@ -24,6 +24,38 @@
     :position relative
     :z-index 200
 
+  .status-container
+    :float right
+    :padding 4px
+
+    .status-item
+      :float left
+      :margin-left 10px
+      :color darken(white, 60%)
+
+      &:after
+        :color darken(white, 20%)
+
+    .status-hits
+      @extend .status-item
+      &:after
+        :content " Hits"
+
+    .status-misses
+      @extend .status-item
+      &:after
+        :content " Misses"
+
+    .status-wpm
+      @extend .status-item
+      &:after
+        :content ' WPM'
+
+    .status-accuracy
+      @extend .status-item
+      &:after
+        :content '%'
+
   .page-row-miss-space
     :padding 4px
     :border 1px solid darken(white, 15%)

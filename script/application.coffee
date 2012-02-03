@@ -4,6 +4,7 @@ require_js {
   constants: true
   keyboard: true
   page: true
+  status: true
   manager: true
 }, (success)->
   $ ->
@@ -14,6 +15,8 @@ class FluxType
     @drawUI()
 
   drawUI: =>
+    @status = new Status this
+
     @page = new Page this, {
       width: @$container.width() - 100
       height: 160
