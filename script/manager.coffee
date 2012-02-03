@@ -2,11 +2,18 @@ class Manager
   @SPECIAL_KEYS = [KEYS.BACKSPACE]
 
   constructor: (@base)->
+    # iPad support (tap header to enable keyboard)
+    @$hidden_input = ($ "<textarea type='text' class='hidden-input' value='Q'></textarea>").prependTo @base.$container
+
     ($ window).bind 'keypress', @processKeyPress
     ($ window).bind 'keydown', @processKeyDown
     ($ window).bind 'keyup', @processKeyUp
 
   processKeyPress: (e)=>
+    # iPad: disable auto-caps when pressing space
+    # disable input cursor from coming into view
+    @$hidden_input.val('Q')
+
     space = @base.page.current_space
     if space && space.match(e.charCode)
       space.hit()

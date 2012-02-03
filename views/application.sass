@@ -21,6 +21,8 @@
 
   #page-outer-container
     :margin-top 20px
+    :position relative
+    :z-index 200
 
   .page-row-miss-space
     :padding 4px
@@ -73,6 +75,18 @@
 
   .clear
     :clear both
+
+  .hidden-input
+    :color white
+    :border 0px
+    :position absolute
+    :background transparent
+    :top -200px
+    :width 960px
+    :height 200px
+    :resize none
+    :z-index 1
+    :cursor default
 
   .input_area
     :clear both
