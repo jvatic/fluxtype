@@ -56,6 +56,7 @@ Page = (function() {
   };
 
   Page.prototype.drawText = function() {
+    var last_space;
     this.resetRows();
     if (this._start_with_space === true) {
       this._start_with_space = false;
@@ -80,7 +81,8 @@ Page = (function() {
       }
       return _results;
     }, this));
-    if (_.last(_.last(this.rows).spaces).typeable) this._start_with_space = true;
+    last_space = _.last(_.last(this.rows).spaces);
+    if (last_space.typeable && !last_space.is_space) this._start_with_space = true;
     this.current_space = _.first(_.first(this.rows).spaces);
     if (!this.current_space.typeable) this.nextSpace();
     return this.current_space.select();
@@ -178,6 +180,7 @@ Page = (function() {
 
       Space.prototype.setSpace = function() {
         this.typeable = true;
+        this.is_space = true;
         this.$element.html("&nbsp;");
         this.$element.removeClass('empty');
         return this.$element.addClass('space');

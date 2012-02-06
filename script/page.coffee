@@ -55,7 +55,8 @@ class Page
           last_space.isLast() if last_space
           break
 
-    if _.last(_.last(@rows).spaces).typeable
+    last_space = _.last(_.last(@rows).spaces)
+    if last_space.typeable && !last_space.is_space
       @_start_with_space = true
 
     @current_space = _.first(_.first(@rows).spaces)
@@ -125,6 +126,7 @@ class Page
 
       setSpace: =>
         @typeable = true
+        @is_space = true
         @$element.html "&nbsp;"
         @$element.removeClass 'empty'
         @$element.addClass 'space'
