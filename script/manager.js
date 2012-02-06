@@ -29,6 +29,7 @@ Manager = (function() {
   Manager.prototype.processKeyPress = function(e) {
     var space;
     this.$hidden_input.val('Q');
+    if (e.keyCode === KEYS.BACKSPACE) return;
     space = this.base.page.current_space;
     if (space && space.match(e.charCode)) {
       space.hit();

@@ -17,6 +17,8 @@ class Manager
     # disable input cursor from coming into view
     @$hidden_input.val('Q')
 
+    return if e.keyCode == KEYS.BACKSPACE
+
     space = @base.page.current_space
     if space && space.match(e.charCode)
       space.hit()
