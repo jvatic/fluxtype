@@ -38,6 +38,12 @@ class Page
 
   drawText: =>
     @resetRows()
+
+    if @_start_with_space == true
+      @_start_with_space = false
+      _.first(_.first(@rows).spaces).setSpace()
+      _.first(@rows).space_index = 1
+
     return @_initText() if @word_index >= @words.length
     _.each @rows, (row, row_index)=>
       for word, word_index in (_.rest @words, @word_index)
@@ -48,6 +54,9 @@ class Page
           last_space = row.spaces[row.space_index-1]
           last_space.isLast() if last_space
           break
+
+    if _.last(_.last(@rows).spaces).typeable
+      @_start_with_space = true
 
     @current_space = _.first(_.first(@rows).spaces)
     @nextSpace() unless @current_space.typeable

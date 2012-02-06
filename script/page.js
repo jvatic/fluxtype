@@ -57,6 +57,11 @@ Page = (function() {
 
   Page.prototype.drawText = function() {
     this.resetRows();
+    if (this._start_with_space === true) {
+      this._start_with_space = false;
+      _.first(_.first(this.rows).spaces).setSpace();
+      _.first(this.rows).space_index = 1;
+    }
     if (this.word_index >= this.words.length) return this._initText();
     _.each(this.rows, __bind(function(row, row_index) {
       var last_space, word, word_index, _len, _ref, _results;
@@ -75,6 +80,7 @@ Page = (function() {
       }
       return _results;
     }, this));
+    if (_.last(_.last(this.rows).spaces).typeable) this._start_with_space = true;
     this.current_space = _.first(_.first(this.rows).spaces);
     if (!this.current_space.typeable) this.nextSpace();
     return this.current_space.select();
