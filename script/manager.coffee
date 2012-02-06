@@ -8,6 +8,9 @@ class Manager
     ($ window).bind 'keypress', @processKeyPress
     ($ window).bind 'keydown', @processKeyDown
     ($ window).bind 'keyup', @processKeyUp
+    ($ window).bind 'focus', =>
+      for keyCode in[KEYS.CONTROL, KEYS.COMMAND, KEYS.OPTION, KEYS.SHIFT]
+        @base.keyboard.deselectKey null, keyCode
 
   processKeyPress: (e)=>
     # iPad: disable auto-caps when pressing space

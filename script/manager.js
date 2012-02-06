@@ -14,6 +14,16 @@ Manager = (function() {
     ($(window)).bind('keypress', this.processKeyPress);
     ($(window)).bind('keydown', this.processKeyDown);
     ($(window)).bind('keyup', this.processKeyUp);
+    ($(window)).bind('focus', __bind(function() {
+      var keyCode, _i, _len, _ref, _results;
+      _ref = [KEYS.CONTROL, KEYS.COMMAND, KEYS.OPTION, KEYS.SHIFT];
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        keyCode = _ref[_i];
+        _results.push(this.base.keyboard.deselectKey(null, keyCode));
+      }
+      return _results;
+    }, this));
   }
 
   Manager.prototype.processKeyPress = function(e) {
