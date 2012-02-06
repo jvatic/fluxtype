@@ -1,5 +1,6 @@
 require_js {
   underscore: true
+  'store-js': true
   constants: true
   keyboard: true
   page: true
