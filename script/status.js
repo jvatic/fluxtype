@@ -8,6 +8,8 @@ Status = (function() {
     this.base = base;
     this.recordMiss = __bind(this.recordMiss, this);
     this.recordHit = __bind(this.recordHit, this);
+    this.recordHitSpeed = __bind(this.recordHitSpeed, this);
+    this.wpmAvg = __bind(this.wpmAvg, this);
     this.update = __bind(this.update, this);
     this.hits = [];
     this.misses = [];
@@ -30,36 +32,37 @@ Status = (function() {
     this.hit_speed_index = this.saved_data.get('hit_speed_index');
     this.wpms = this.saved_data.get('wpms');
     this.wpm_buffer = 3;
-    this.$container = ($("<div class = 'status-container'></div>")).appendTo(this.base.$container);
-    this.$hits = ($("<div class = 'status-hits'>0.0</div>")).appendTo(this.$container);
-    this.$misses = ($("<div class = 'status-misses'>0.0</div>")).appendTo(this.$container);
-    this.$wpm = ($("<div class = 'status-wpm'>0.0</div>")).appendTo(this.$container);
-    this.$accuracy = ($("<div class = 'status-accuracy'>100</div>")).appendTo(this.$container);
+    this.$container = ($("<div class='status-container'></div>")).appendTo(this.base.$container);
+    this.$hits = ($("<div class='status-hits'>0.0</div>")).appendTo(this.$container);
+    this.$misses = ($("<div class='status-misses'>0.0</div>")).appendTo(this.$container);
+    this.$wpm = ($("<div class='status-wpm'>0.0</div>")).appendTo(this.$container);
+    this.$accuracy = ($("<div class='status-accuracy'>100</div>")).appendTo(this.$container);
     this.update();
   }
 
   Status.prototype.update = function() {
-    var accuracy, hit_count, miss_count, wpm_avg, wpms;
+    var accuracy, hit_count, miss_count;
     hit_count = this.hit_counts[this.session_date];
     miss_count = this.miss_counts[this.session_date];
     this.$hits.text(hit_count);
     this.$misses.text(miss_count);
-    wpms = _.rest(this.wpms, Math.min(this.wpms.length - this.wpm_buffer, this.wpms.length - 1));
-    wpm_avg = ((_.inject(wpms, (__bind(function(sum, wpm) {
-      return sum + wpm;
-    }, this)), 0)) / wpms.length) || 0;
-    this.$wpm.text(wpm_avg.toFixed(2));
+    this.$wpm.text(this.wpmAvg().toFixed(2));
     accuracy = ((hit_count - miss_count) / (hit_count + miss_count)) * 100;
     accuracy || (accuracy = 0);
     return this.$accuracy.text(accuracy.toFixed(2));
   };
 
-  Status.prototype.recordHit = function(page_space) {
-    var current_hit_at, hits, last_hit_at, speed, time;
-    last_hit_at = this.last_hit_at;
-    current_hit_at = new Date;
-    this.last_hit_at = current_hit_at;
-    this.hit_speeds.push((current_hit_at - last_hit_at) / 1000);
+  Status.prototype.wpmAvg = function() {
+    var wpms;
+    wpms = _.rest(this.wpms, Math.min(this.wpms.length - this.wpm_buffer, this.wpms.length - 1));
+    return ((_.inject(wpms, (__bind(function(sum, wpm) {
+      return sum + wpm;
+    }, this)), 0)) / wpms.length) || 0;
+  };
+
+  Status.prototype.recordHitSpeed = function(seconds) {
+    var hits, speed, time;
+    this.hit_speeds.push(seconds);
     this.saved_data.set('hit_speeds', this.hit_speeds);
     hits = _.rest(this.hit_speeds, this.hit_speed_index);
     if (hits.length === this.word_length) {
@@ -70,8 +73,16 @@ Status = (function() {
       }, this)), 0);
       speed = 60 / time;
       this.wpms.push(speed);
-      this.saved_data.set('wpms', this.wpms);
+      return this.saved_data.set('wpms', this.wpms);
     }
+  };
+
+  Status.prototype.recordHit = function(page_space) {
+    var current_hit_at, last_hit_at;
+    last_hit_at = this.last_hit_at;
+    current_hit_at = new Date;
+    this.last_hit_at = current_hit_at;
+    this.recordHitSpeed((current_hit_at - last_hit_at) / 1000);
     this.hits.push(page_space);
     this.hit_counts[this.session_date] += 1;
     this.saved_data.set('hit_counts', this.hit_counts);

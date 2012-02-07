@@ -18,7 +18,7 @@ class FluxType
     @status = new Status this
 
     @page = new Page this, {
-      width: @$container.width() - 100
+      width: @$container.innerWidth()
       height: 160
       left: 50
       top: 20

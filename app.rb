@@ -11,6 +11,10 @@ get '/' do
   erb :application
 end
 
+get '/test' do
+  erb :test
+end
+
 get '/default_text' do
   content_type "text/plain"
   text = Lipsum.new.paragraphs[2].to_s
@@ -19,7 +23,8 @@ end
 
 get '*.js' do
   content_type "application/javascript"
-  File.read( File.join(File.dirname(__FILE__), 'script', params[:splat].join('/') << '.js') )
+  path = File.join(File.dirname(__FILE__), 'script', params[:splat].join('/') << '.js')
+  File.exists?(path) ? File.read(path) : "console.error('No such file: #{path}');"
 end
 
 get '/js/*' do
@@ -36,7 +41,12 @@ end
 
 get '*.css' do
   content_type 'text/css'
-  sass params[:splat].join('').to_sym
+  css_path = File.join( APP_ROOT, 'views', params[:splat].join('') ) << '.css'
+  if File.exists?(css_path)
+    File.read(css_path)
+  else
+    sass params[:splat].join('').to_sym
+  end
 end
 
 get '/fonts/*.ttf' do

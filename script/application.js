@@ -27,7 +27,7 @@ FluxType = (function() {
   FluxType.prototype.drawUI = function() {
     this.status = new Status(this);
     this.page = new Page(this, {
-      width: this.$container.width() - 100,
+      width: this.$container.innerWidth(),
       height: 160,
       left: 50,
       top: 20

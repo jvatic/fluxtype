@@ -12,7 +12,7 @@ class Page
     @config = $.extend default_config, @config
 
     @config.space_size  = @config.font_size + (@config.padding * 2) + (@config.spacing * 2)
-    @config.num_columns = Math.floor (@$container.innerWidth()/@config.space_size)+1
+    @config.num_columns = Math.floor (@config.width/@config.space_size)+1
     @config.num_rows    = Math.floor @config.height/@config.space_size
     @config.max_chars   = @config.num_columns * @config.num_rows
 
@@ -93,7 +93,7 @@ class Page
 
   class @Row
     constructor: (@page, @index)->
-      @spaces = _.map [0..@page.config.num_columns], (index)=> new Page.Row.Space @page, this, index
+      @spaces = _.map [0..@page.config.num_columns-1], (index)=> new Page.Row.Space @page, this, index
       (_.first @spaces).isFirst()
 
       @space_index = 0

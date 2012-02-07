@@ -80,6 +80,10 @@ module Sinatra::Helpers
     end
   end
 
+  def javascript_test(*args)
+    javascript *args.map { |path| "test/" << path.to_s }
+  end
+
   def css(*args)
     @css_paths ||= []
 

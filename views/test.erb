@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QUnit Test</title>
+  <% css "qunit" %>
+  <%= css %>
+</head>
+<body>
+  <h1 id="qunit-header">QUnit Test</h1>
+  <h2 id="qunit-banner"></h2>
+  <div id="qunit-testrunner-toolbar"></div>
+  <ol id="qunit-tests"></ol>
+  <div id="qunit-fixture">
+    <div id='application'></div>
+  </div>
+
+  <div id='javascript'>
+    <% javascript 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js' %>
+    <% javascript :qunit, 'jquery.mockjax' %>
+    <% javascript :underscore, :constants, :keyboard, :page, :status, :manager, 'store-js' %>
+    <% javascript_test :test_helper, :application, :manager, :page, :keyboard, :status %>
+    <script type='text/javascript'>
+      require_js = function(scripts, callback){} // disable application from initializing
+    </script>
+
+    <% javascript :application %>
+    <%= javascript %>
+  </div>
+</body>
+</html>

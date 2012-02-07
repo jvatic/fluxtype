@@ -26,11 +26,11 @@ class Status
     @wpms        = @saved_data.get('wpms')
     @wpm_buffer  = 3
 
-    @$container = ($ "<div class = 'status-container'></div>").appendTo @base.$container
-    @$hits      = ($ "<div class = 'status-hits'>0.0</div>").appendTo @$container
-    @$misses    = ($ "<div class = 'status-misses'>0.0</div>").appendTo @$container
-    @$wpm       = ($ "<div class = 'status-wpm'>0.0</div>").appendTo @$container
-    @$accuracy  = ($ "<div class = 'status-accuracy'>100</div>").appendTo @$container
+    @$container = ($ "<div class='status-container'></div>").appendTo @base.$container
+    @$hits      = ($ "<div class='status-hits'>0.0</div>").appendTo @$container
+    @$misses    = ($ "<div class='status-misses'>0.0</div>").appendTo @$container
+    @$wpm       = ($ "<div class='status-wpm'>0.0</div>").appendTo @$container
+    @$accuracy  = ($ "<div class='status-accuracy'>100</div>").appendTo @$container
 
     @update()
 
@@ -41,20 +41,18 @@ class Status
     @$hits.text hit_count
     @$misses.text miss_count
 
-    wpms = _.rest(@wpms, Math.min(@wpms.length-@wpm_buffer, @wpms.length-1))
-    wpm_avg = ((_.inject wpms, ((sum, wpm)=> sum + wpm), 0) / wpms.length) || 0
-    @$wpm.text wpm_avg.toFixed(2)
+    @$wpm.text @wpmAvg().toFixed(2)
 
     accuracy = ((hit_count - miss_count) / (hit_count + miss_count)) * 100
     accuracy ||= 0
     @$accuracy.text accuracy.toFixed(2)
 
-  recordHit: (page_space)=>
-    last_hit_at    = @last_hit_at
-    current_hit_at = new Date
-    @last_hit_at   = current_hit_at
+  wpmAvg: =>
+    wpms = _.rest(@wpms, Math.min(@wpms.length-@wpm_buffer, @wpms.length-1))
+    ((_.inject wpms, ((sum, wpm)=> sum + wpm), 0) / wpms.length) || 0
 
-    @hit_speeds.push (current_hit_at - last_hit_at)/1000
+  recordHitSpeed: (seconds)=>
+    @hit_speeds.push seconds
     @saved_data.set('hit_speeds', @hit_speeds)
     hits = _.rest(@hit_speeds, @hit_speed_index)
     if hits.length == @word_length
@@ -64,6 +62,13 @@ class Status
       speed = 60/time
       @wpms.push speed
       @saved_data.set('wpms', @wpms)
+
+  recordHit: (page_space)=>
+    last_hit_at    = @last_hit_at
+    current_hit_at = new Date
+    @last_hit_at   = current_hit_at
+
+    @recordHitSpeed (current_hit_at - last_hit_at) / 1000
 
     @hits.push page_space
     @hit_counts[@session_date] += 1

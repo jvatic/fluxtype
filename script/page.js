@@ -21,7 +21,7 @@ Page = (function() {
     };
     this.config = $.extend(default_config, this.config);
     this.config.space_size = this.config.font_size + (this.config.padding * 2) + (this.config.spacing * 2);
-    this.config.num_columns = Math.floor((this.$container.innerWidth() / this.config.space_size) + 1);
+    this.config.num_columns = Math.floor((this.config.width / this.config.space_size) + 1);
     this.config.num_rows = Math.floor(this.config.height / this.config.space_size);
     this.config.max_chars = this.config.num_columns * this.config.num_rows;
     this._initText();
@@ -122,7 +122,7 @@ Page = (function() {
       this.push = __bind(this.push, this);
       this.spaces = _.map((function() {
         _results = [];
-        for (var _i = 0, _ref = this.page.config.num_columns; 0 <= _ref ? _i <= _ref : _i >= _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
+        for (var _i = 0, _ref = this.page.config.num_columns - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
         return _results;
       }).apply(this), __bind(function(index) {
         return new Page.Row.Space(this.page, this, index);
