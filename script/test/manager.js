@@ -40,17 +40,17 @@ module("Manager", {
   }
 });
 
-test("keypress within window deligates to page and status", function() {
+test("keypress within document deligates to page and status", function() {
   var e;
   e = $.Event("keypress");
   e.charCode = 97;
-  ($(window)).trigger(e);
+  ($(document)).trigger(e);
   equal(this.space_index, 1, '@base.page.nextSpace called');
   equal(this.hit_count, 1, '@base.state.recordHit called');
   this.manager.base.page.current_space.match = function() {
     return false;
   };
-  ($(window)).trigger(e);
+  ($(document)).trigger(e);
   equal(this.space_index, 1, '@base.page.nextSpace not called');
   equal(this.hit_count, 1, '@base.state.recordHit not called');
   return equal(this.miss_count, 1, '@base.state.recordMiss called');
@@ -62,11 +62,11 @@ test("#processKeyPress does nothing for backspace", function() {
   }), null);
 });
 
-test("keydown within window deligates to keyboard", function() {
+test("keydown within document deligates to keyboard", function() {
   var e;
   e = $.Event("keydown");
   e.keyCode = 13;
-  ($(window)).trigger(e);
+  ($(document)).trigger(e);
   return equal(this.selected_key, 13, 'keyboard called with keyCode');
 });
 
@@ -83,11 +83,11 @@ test("#precessKeyDown sends backspace to current space", function() {
   return equal(this.space_code, 8);
 });
 
-test("keyup within window deligates to keyboard", function() {
+test("keyup within document deligates to keyboard", function() {
   var e;
   this.selected_key = 8;
   e = $.Event("keyup");
   e.keyCode = this.selected_key;
-  ($(window)).trigger(e);
+  ($(document)).trigger(e);
   return equal(this.selected_key, null, 'keyboard called with keyCode');
 });

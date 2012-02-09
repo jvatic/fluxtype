@@ -20,16 +20,16 @@ module "Manager"
       }
     }
 
-test "keypress within window deligates to page and status", ->
+test "keypress within document deligates to page and status", ->
   e = $.Event "keypress"
   e.charCode = 97
 
-  ($ window).trigger e
+  ($ document).trigger e
   equal @space_index, 1, '@base.page.nextSpace called'
   equal @hit_count, 1, '@base.state.recordHit called'
 
   @manager.base.page.current_space.match = -> false
-  ($ window).trigger e
+  ($ document).trigger e
   equal @space_index, 1, '@base.page.nextSpace not called'
   equal @hit_count, 1, '@base.state.recordHit not called'
   equal @miss_count, 1, '@base.state.recordMiss called'
@@ -37,10 +37,10 @@ test "keypress within window deligates to page and status", ->
 test "#processKeyPress does nothing for backspace", ->
   equal @manager.processKeyPress({ keyCode: 8 }), null
 
-test "keydown within window deligates to keyboard", ->
+test "keydown within document deligates to keyboard", ->
   e = $.Event "keydown"
   e.keyCode = 13
-  ($ window).trigger e
+  ($ document).trigger e
 
   equal @selected_key, 13, 'keyboard called with keyCode'
 
@@ -49,11 +49,11 @@ test "#precessKeyDown sends backspace to current space", ->
   @manager.processKeyDown { keyCode: 8, preventDefault: -> null }
   equal @space_code, 8
 
-test "keyup within window deligates to keyboard", ->
+test "keyup within document deligates to keyboard", ->
   @selected_key = 8
   e = $.Event "keyup"
   e.keyCode = @selected_key
-  ($ window).trigger e
+  ($ document).trigger e
 
   equal @selected_key, null, 'keyboard called with keyCode'
 

@@ -3,10 +3,10 @@ class Manager
     # iPad support (tap header to enable keyboard)
     @$hidden_input = ($ "<textarea type='text' class='hidden-input' value='Q'></textarea>").prependTo @base.$container
 
-    ($ window).bind 'keypress', @processKeyPress
-    ($ window).bind 'keydown', @processKeyDown
-    ($ window).bind 'keyup', @processKeyUp
-    ($ window).bind 'focus', =>
+    ($ document).bind 'keypress', @processKeyPress
+    ($ document).bind 'keydown', @processKeyDown
+    ($ document).bind 'keyup', @processKeyUp
+    ($ document).bind 'focus', =>
       for keyCode in[KEYS.CONTROL, KEYS.COMMAND, KEYS.OPTION, KEYS.SHIFT]
         @base.keyboard.deselectKey null, keyCode
 
@@ -16,6 +16,8 @@ class Manager
     @$hidden_input.val('Q')
 
     return null if e.keyCode == KEYS.BACKSPACE
+
+    e.charCode ||= e.which # IE compatibility
 
     space = @base.page.current_space
     if space && space.match(e.charCode)

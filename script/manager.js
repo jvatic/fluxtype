@@ -9,10 +9,10 @@ Manager = (function() {
     this.processKeyDown = __bind(this.processKeyDown, this);
     this.processKeyPress = __bind(this.processKeyPress, this);
     this.$hidden_input = ($("<textarea type='text' class='hidden-input' value='Q'></textarea>")).prependTo(this.base.$container);
-    ($(window)).bind('keypress', this.processKeyPress);
-    ($(window)).bind('keydown', this.processKeyDown);
-    ($(window)).bind('keyup', this.processKeyUp);
-    ($(window)).bind('focus', __bind(function() {
+    ($(document)).bind('keypress', this.processKeyPress);
+    ($(document)).bind('keydown', this.processKeyDown);
+    ($(document)).bind('keyup', this.processKeyUp);
+    ($(document)).bind('focus', __bind(function() {
       var keyCode, _i, _len, _ref, _results;
       _ref = [KEYS.CONTROL, KEYS.COMMAND, KEYS.OPTION, KEYS.SHIFT];
       _results = [];
@@ -28,6 +28,7 @@ Manager = (function() {
     var space;
     this.$hidden_input.val('Q');
     if (e.keyCode === KEYS.BACKSPACE) return null;
+    e.charCode || (e.charCode = e.which);
     space = this.base.page.current_space;
     if (space && space.match(e.charCode)) {
       space.hit();
