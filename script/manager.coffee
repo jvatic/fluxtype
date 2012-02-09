@@ -1,6 +1,4 @@
 class Manager
-  @SPECIAL_KEYS = [KEYS.BACKSPACE]
-
   constructor: (@base)->
     # iPad support (tap header to enable keyboard)
     @$hidden_input = ($ "<textarea type='text' class='hidden-input' value='Q'></textarea>").prependTo @base.$container
@@ -17,14 +15,14 @@ class Manager
     # disable input cursor from coming into view
     @$hidden_input.val('Q')
 
-    return if e.keyCode == KEYS.BACKSPACE
+    return null if e.keyCode == KEYS.BACKSPACE
 
     space = @base.page.current_space
     if space && space.match(e.charCode)
       space.hit()
       @base.page.nextSpace()
       @base.status.recordHit space
-    else
+    else if space
       space.miss(e.charCode)
       @base.status.recordMiss space
 
@@ -34,7 +32,7 @@ class Manager
     if _.include TOUCHY_KEYS, e.keyCode
       e.preventDefault()
 
-    if _.include Manager.SPECIAL_KEYS, e.keyCode
+    if _.include [KEYS.BACKSPACE], e.keyCode
       space = @base.page.current_space
       space.match e.keyCode
 
