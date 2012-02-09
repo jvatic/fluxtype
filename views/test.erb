@@ -18,7 +18,7 @@
     <% javascript 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js' %>
     <% javascript :qunit, 'jquery.mockjax' %>
     <% javascript :underscore, :constants, :keyboard, :page, :status, :manager, 'store-js' %>
-    <% javascript_test :test_helper, :application, :manager, :page, :keyboard, :status %>
+    <% javascript_test :test_helper, :application, :manager, :page, :status %>
     <script type='text/javascript'>
       require_js = function(scripts, callback){} // disable application from initializing
     </script>
