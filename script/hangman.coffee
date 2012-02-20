@@ -28,9 +28,12 @@ class Hangman
     @gameover.attr {
       'font-size': 10
       stroke: '#E21A10'
+      'cursor': 'pointer'
     }
     @gameover.rotate -20
     @gameover.hide()
+
+    @gameover.click -> window.location.reload()
 
     @game_status = @paper.text(90, 30, "Level 1\nScore: 0")
     @game_status.rotate(-45)

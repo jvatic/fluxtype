@@ -31,10 +31,14 @@ Hangman = (function() {
     this.gameover = this.paper.text(140, 80, "Game Over\nReload to play again!");
     this.gameover.attr({
       'font-size': 10,
-      stroke: '#E21A10'
+      stroke: '#E21A10',
+      'cursor': 'pointer'
     });
     this.gameover.rotate(-20);
     this.gameover.hide();
+    this.gameover.click(function() {
+      return window.location.reload();
+    });
     this.game_status = this.paper.text(90, 30, "Level 1\nScore: 0");
     this.game_status.rotate(-45);
     this.misses = 0;
