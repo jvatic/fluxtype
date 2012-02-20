@@ -24,6 +24,7 @@ class Manager
       space.hit()
       @base.page.nextSpace()
       @base.status.recordHit space
+      @base.hangman.hit() if @base.hangman
     else if space
       space.miss(e.charCode)
       @base.status.recordMiss space

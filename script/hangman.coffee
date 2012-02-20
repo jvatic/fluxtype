@@ -38,13 +38,15 @@ class Hangman
     @game_status = @paper.text(90, 30, "Level 1\nScore: 0")
     @game_status.rotate(-45)
 
-    @high_score_display = @paper.text(100, 90, "High Score:")
+    @high_score_display = @paper.text(105, 90, "High Score:")
 
     @data = new Store 'hangman', {
       high_score: 0
     }
 
     @high_score = @data.get('high_score')
+
+    @wpm_index = @base.status.wpms.length
 
     @misses = 0
     @score  = 0
@@ -73,6 +75,9 @@ class Hangman
       { e: @person.legs.right, thresh: 6 }
     ]
 
+  hit: =>
+    @updateGameStatus()
+
   miss: =>
     @misses += 1
     @total_misses += 1
@@ -85,7 +90,7 @@ class Hangman
       @high_score = @score
       @data.set('high_score', @score)
 
-    @high_score_display.attr "text", "High Score: #{@high_score}"
+    @high_score_display.attr "text", "High Score: #{@high_score.toFixed(2)}"
 
     return @updateGameStatus() if @level == 7 # highest level
 
@@ -103,9 +108,10 @@ class Hangman
     @updateGameStatus()
 
   updateGameStatus: =>
-    @score = 24 + (@page_number * @level) - @total_misses
+    wpm_avg = @base.status.wpmAvg _.rest(@base.status.wpms, @wpm_index)
+    @score = 24 + (@page_number * @level) - @total_misses + wpm_avg
 
-    @game_status.attr "text", "Level #{@level}\nScore: #{@score}"
+    @game_status.attr "text", "Level #{@level}\nScore: #{@score.toFixed(2)}"
 
   process: =>
     return if @dead

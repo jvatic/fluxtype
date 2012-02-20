@@ -41,14 +41,17 @@ class Status
     @$hits.text hit_count
     @$misses.text miss_count
 
-    @$wpm.text @wpmAvg().toFixed(2)
+    @$wpm.text @wpmBufferAvg().toFixed(2)
 
     accuracy = ((hit_count - miss_count) / (hit_count + miss_count)) * 100
     accuracy ||= 0
     @$accuracy.text accuracy.toFixed(2)
 
-  wpmAvg: =>
+  wpmBufferAvg: =>
     wpms = _.rest(@wpms, Math.min(@wpms.length-@wpm_buffer, @wpms.length-1))
+    @wpmAvg wpms
+
+  wpmAvg: (wpms)=>
     ((_.inject wpms, ((sum, wpm)=> sum + wpm), 0) / wpms.length) || 0
 
   recordHitSpeed: (seconds)=>

@@ -11,6 +11,7 @@ Hangman = (function() {
     this.updateGameStatus = __bind(this.updateGameStatus, this);
     this.upLevel = __bind(this.upLevel, this);
     this.miss = __bind(this.miss, this);
+    this.hit = __bind(this.hit, this);
     _ref = [40, 300, 200, 200], x = _ref[0], y = _ref[1], width = _ref[2], height = _ref[3];
     this.paper = new Raphael(x, y, width, height);
     this.gallows = this.paper.path("M0," + height + " L" + width + "," + height + " M60," + height + " L60,0 L180,0 L180,40\nM60,60 L120,0");
@@ -41,11 +42,12 @@ Hangman = (function() {
     });
     this.game_status = this.paper.text(90, 30, "Level 1\nScore: 0");
     this.game_status.rotate(-45);
-    this.high_score_display = this.paper.text(100, 90, "High Score:");
+    this.high_score_display = this.paper.text(105, 90, "High Score:");
     this.data = new Store('hangman', {
       high_score: 0
     });
     this.high_score = this.data.get('high_score');
+    this.wpm_index = this.base.status.wpms.length;
     this.misses = 0;
     this.score = 0;
     this.level = 0;
@@ -84,6 +86,10 @@ Hangman = (function() {
     ];
   }
 
+  Hangman.prototype.hit = function() {
+    return this.updateGameStatus();
+  };
+
   Hangman.prototype.miss = function() {
     this.misses += 1;
     this.total_misses += 1;
@@ -96,7 +102,7 @@ Hangman = (function() {
       this.high_score = this.score;
       this.data.set('high_score', this.score);
     }
-    this.high_score_display.attr("text", "High Score: " + this.high_score);
+    this.high_score_display.attr("text", "High Score: " + (this.high_score.toFixed(2)));
     if (this.level === 7) return this.updateGameStatus();
     this.level += 1;
     this.misses = 0;
@@ -110,8 +116,10 @@ Hangman = (function() {
   };
 
   Hangman.prototype.updateGameStatus = function() {
-    this.score = 24 + (this.page_number * this.level) - this.total_misses;
-    return this.game_status.attr("text", "Level " + this.level + "\nScore: " + this.score);
+    var wpm_avg;
+    wpm_avg = this.base.status.wpmAvg(_.rest(this.base.status.wpms, this.wpm_index));
+    this.score = 24 + (this.page_number * this.level) - this.total_misses + wpm_avg;
+    return this.game_status.attr("text", "Level " + this.level + "\nScore: " + (this.score.toFixed(2)));
   };
 
   Hangman.prototype.process = function() {

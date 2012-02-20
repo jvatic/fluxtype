@@ -10,6 +10,7 @@ Status = (function() {
     this.recordHit = __bind(this.recordHit, this);
     this.recordHitSpeed = __bind(this.recordHitSpeed, this);
     this.wpmAvg = __bind(this.wpmAvg, this);
+    this.wpmBufferAvg = __bind(this.wpmBufferAvg, this);
     this.update = __bind(this.update, this);
     this.hits = [];
     this.misses = [];
@@ -46,15 +47,19 @@ Status = (function() {
     miss_count = this.miss_counts[this.session_date];
     this.$hits.text(hit_count);
     this.$misses.text(miss_count);
-    this.$wpm.text(this.wpmAvg().toFixed(2));
+    this.$wpm.text(this.wpmBufferAvg().toFixed(2));
     accuracy = ((hit_count - miss_count) / (hit_count + miss_count)) * 100;
     accuracy || (accuracy = 0);
     return this.$accuracy.text(accuracy.toFixed(2));
   };
 
-  Status.prototype.wpmAvg = function() {
+  Status.prototype.wpmBufferAvg = function() {
     var wpms;
     wpms = _.rest(this.wpms, Math.min(this.wpms.length - this.wpm_buffer, this.wpms.length - 1));
+    return this.wpmAvg(wpms);
+  };
+
+  Status.prototype.wpmAvg = function(wpms) {
     return ((_.inject(wpms, (__bind(function(sum, wpm) {
       return sum + wpm;
     }, this)), 0)) / wpms.length) || 0;

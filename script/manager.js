@@ -33,7 +33,8 @@ Manager = (function() {
     if (space && space.match(e.charCode)) {
       space.hit();
       this.base.page.nextSpace();
-      return this.base.status.recordHit(space);
+      this.base.status.recordHit(space);
+      if (this.base.hangman) return this.base.hangman.hit();
     } else if (space) {
       space.miss(e.charCode);
       this.base.status.recordMiss(space);
