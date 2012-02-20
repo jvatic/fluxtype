@@ -27,6 +27,7 @@ class Manager
     else if space
       space.miss(e.charCode)
       @base.status.recordMiss space
+      @base.hangman.miss() if @base.hangman
 
   processKeyDown: (e)=>
     @base.keyboard.selectKey e.charCode, e.keyCode

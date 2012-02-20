@@ -36,7 +36,8 @@ Manager = (function() {
       return this.base.status.recordHit(space);
     } else if (space) {
       space.miss(e.charCode);
-      return this.base.status.recordMiss(space);
+      this.base.status.recordMiss(space);
+      if (this.base.hangman) return this.base.hangman.miss();
     }
   };
 

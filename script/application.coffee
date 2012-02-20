@@ -6,6 +6,7 @@ require_js {
   page: true
   status: true
   manager: true
+  hangman: true if window.location.href.match /hangman/
 }, (success)->
   $ ->
     window.flux_type = new FluxType $('#application')
@@ -28,6 +29,9 @@ class FluxType
       width: @$container.width() - 100
       height: 320
     }
+
+    if window.Hangman
+      @hangman = new Hangman this
 
     @manager = new Manager this
 

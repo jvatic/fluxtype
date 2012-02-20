@@ -2,6 +2,8 @@ require 'sinatra'
 require 'open-uri'
 require './helpers'
 
+APP_ROOT = File.dirname(__FILE__)
+
 configure :development do |config|
   require 'sinatra/reloader'
   config.also_reload "*.rb"
@@ -9,6 +11,10 @@ end
 
 get '/' do
   erb :application
+end
+
+get '/hangman' do
+  erb :hangman
 end
 
 get '/test' do

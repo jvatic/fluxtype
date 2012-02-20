@@ -58,6 +58,7 @@ Page = (function() {
   Page.prototype.drawText = function() {
     var last_space;
     this.resetRows();
+    if (this.base.hangman) this.base.hangman.upLevel();
     if (this._start_with_space === true) {
       this._start_with_space = false;
       _.first(_.first(this.rows).spaces).setSpace();

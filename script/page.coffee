@@ -39,6 +39,9 @@ class Page
   drawText: =>
     @resetRows()
 
+    if @base.hangman
+      @base.hangman.upLevel()
+
     if @_start_with_space == true
       @_start_with_space = false
       _.first(_.first(@rows).spaces).setSpace()

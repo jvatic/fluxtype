@@ -8,7 +8,8 @@ require_js({
   keyboard: true,
   page: true,
   status: true,
-  manager: true
+  manager: true,
+  hangman: window.location.href.match(/hangman/) ? true : void 0
 }, function(success) {
   return $(function() {
     return window.flux_type = new FluxType($('#application'));
@@ -36,6 +37,7 @@ FluxType = (function() {
       width: this.$container.width() - 100,
       height: 320
     });
+    if (window.Hangman) this.hangman = new Hangman(this);
     return this.manager = new Manager(this);
   };
 
