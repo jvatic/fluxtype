@@ -16,7 +16,7 @@ class Hangman
       torso: @paper.path("M180,68 L180, 120").hide()
       legs: {
         left: @paper.path("M180,120 L160,160").hide()
-        right: @paper.path("M180,120 L200,160").hide()
+        right: @paper.path("M180,120 L2009-0,160").hide()
       }
       arms: {
         left: @paper.path("M180,80 L160,100").hide()
@@ -37,6 +37,14 @@ class Hangman
 
     @game_status = @paper.text(90, 30, "Level 1\nScore: 0")
     @game_status.rotate(-45)
+
+    @high_score_display = @paper.text(100, 90, "High Score:")
+
+    @data = new Store 'hangman', {
+      high_score: 0
+    }
+
+    @high_score = @data.get('high_score')
 
     @misses = 0
     @score  = 0
@@ -72,6 +80,13 @@ class Hangman
 
   upLevel: =>
     @page_number += 1
+
+    if @score > @high_score && @level > 0
+      @high_score = @score
+      @data.set('high_score', @score)
+
+    @high_score_display.attr "text", "High Score: #{@high_score}"
+
     return @updateGameStatus() if @level == 7 # highest level
 
     @level += 1
@@ -89,6 +104,7 @@ class Hangman
 
   updateGameStatus: =>
     @score = 24 + (@page_number * @level) - @total_misses
+
     @game_status.attr "text", "Level #{@level}\nScore: #{@score}"
 
   process: =>

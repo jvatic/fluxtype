@@ -21,7 +21,7 @@ Hangman = (function() {
       torso: this.paper.path("M180,68 L180, 120").hide(),
       legs: {
         left: this.paper.path("M180,120 L160,160").hide(),
-        right: this.paper.path("M180,120 L200,160").hide()
+        right: this.paper.path("M180,120 L2009-0,160").hide()
       },
       arms: {
         left: this.paper.path("M180,80 L160,100").hide(),
@@ -41,6 +41,11 @@ Hangman = (function() {
     });
     this.game_status = this.paper.text(90, 30, "Level 1\nScore: 0");
     this.game_status.rotate(-45);
+    this.high_score_display = this.paper.text(100, 90, "High Score:");
+    this.data = new Store('hangman', {
+      high_score: 0
+    });
+    this.high_score = this.data.get('high_score');
     this.misses = 0;
     this.score = 0;
     this.level = 0;
@@ -87,6 +92,11 @@ Hangman = (function() {
 
   Hangman.prototype.upLevel = function() {
     this.page_number += 1;
+    if (this.score > this.high_score && this.level > 0) {
+      this.high_score = this.score;
+      this.data.set('high_score', this.score);
+    }
+    this.high_score_display.attr("text", "High Score: " + this.high_score);
     if (this.level === 7) return this.updateGameStatus();
     this.level += 1;
     this.misses = 0;
