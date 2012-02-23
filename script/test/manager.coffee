@@ -2,8 +2,10 @@ module "Manager"
   setup: ->
     @manager = new Manager {
       $container: ($ "#application")
+      events: {
+        manager_init: new Event
+      }
       page: {
-        nextSpace: => @space_index = (@space_index || 0) + 1
         current_space: {
           match: -> true
           hit: -> null
@@ -15,17 +17,6 @@ module "Manager"
         deselectKey: => @selected_key = null
       }
     }
-
-test "keypress within document deligates to page and status", ->
-  e = $.Event "keypress"
-  e.charCode = 97
-
-  ($ document).trigger e
-  equal @space_index, 1, '@base.page.nextSpace called'
-
-  @manager.base.page.current_space.match = -> false
-  ($ document).trigger e
-  equal @space_index, 1, '@base.page.nextSpace not called'
 
 test "#processKeyPress does nothing for backspace", ->
   equal @manager.processKeyPress({ keyCode: 8 }), null

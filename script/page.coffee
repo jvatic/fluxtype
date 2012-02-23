@@ -11,6 +11,12 @@ class Page
       miss: new Event
     }
 
+    @base.events.manager_init.subscribe (manager)=>
+      manager.events.key_press.subscribe @_processKeyPress
+      manager.events.key_down.subscribe (keyCode)=>
+        if _.include [KEYS.BACKSPACE], keyCode
+          @current_space.match keyCode
+
     default_config = {
       font_size: 18
       padding: 4
@@ -76,6 +82,14 @@ class Page
     @current_space.select()
 
     @events.next_page.trigger()
+
+  _processKeyPress: (charCode)=>
+    return unless @current_space
+    if @current_space.match(charCode)
+      @current_space.hit()
+      @nextSpace()
+    else
+      @current_space.miss(charCode)
 
   _initText: (text)=>
     unless text

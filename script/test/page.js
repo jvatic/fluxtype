@@ -7,6 +7,9 @@ module("Page", {
   setup: function() {
     return this.page = new Page({
       $container: $("#application"),
+      events: {
+        manager_init: new Event
+      },
       defaultText: function(callback) {
         return callback(TEXT);
       }

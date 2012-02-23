@@ -24,7 +24,8 @@ FluxType = (function() {
     this.defaultText = __bind(this.defaultText, this);
     this.drawUI = __bind(this.drawUI, this);
     this.events = {
-      page_init: new Event
+      page_init: new Event,
+      manager_init: new Event
     };
     this.drawUI();
   }

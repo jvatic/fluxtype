@@ -9,6 +9,7 @@ Page = (function() {
     this.config = config;
     this._initTemplate = __bind(this._initTemplate, this);
     this._initText = __bind(this._initText, this);
+    this._processKeyPress = __bind(this._processKeyPress, this);
     this.drawText = __bind(this.drawText, this);
     this.resetRows = __bind(this.resetRows, this);
     this.nextSpace = __bind(this.nextSpace, this);
@@ -20,6 +21,14 @@ Page = (function() {
       hit: new Event,
       miss: new Event
     };
+    this.base.events.manager_init.subscribe(__bind(function(manager) {
+      manager.events.key_press.subscribe(this._processKeyPress);
+      return manager.events.key_down.subscribe(__bind(function(keyCode) {
+        if (_.include([KEYS.BACKSPACE], keyCode)) {
+          return this.current_space.match(keyCode);
+        }
+      }, this));
+    }, this));
     default_config = {
       font_size: 18,
       padding: 4,
@@ -97,6 +106,16 @@ Page = (function() {
     if (!this.current_space.typeable) this.nextSpace();
     this.current_space.select();
     return this.events.next_page.trigger();
+  };
+
+  Page.prototype._processKeyPress = function(charCode) {
+    if (!this.current_space) return;
+    if (this.current_space.match(charCode)) {
+      this.current_space.hit();
+      return this.nextSpace();
+    } else {
+      return this.current_space.miss(charCode);
+    }
   };
 
   Page.prototype._initText = function(text) {

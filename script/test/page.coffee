@@ -9,6 +9,9 @@ module "Page"
   setup: ->
     @page = new Page {
       $container: ($ "#application")
+      events: {
+        manager_init: new Event
+      }
       defaultText: (callback)->
         callback TEXT
     }, {

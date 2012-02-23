@@ -4,10 +4,10 @@ module("Manager", {
   setup: function() {
     return this.manager = new Manager({
       $container: $("#application"),
+      events: {
+        manager_init: new Event
+      },
       page: {
-        nextSpace: __bind(function() {
-          return this.space_index = (this.space_index || 0) + 1;
-        }, this),
         current_space: {
           match: function() {
             return true;
@@ -30,19 +30,6 @@ module("Manager", {
       }
     });
   }
-});
-
-test("keypress within document deligates to page and status", function() {
-  var e;
-  e = $.Event("keypress");
-  e.charCode = 97;
-  ($(document)).trigger(e);
-  equal(this.space_index, 1, '@base.page.nextSpace called');
-  this.manager.base.page.current_space.match = function() {
-    return false;
-  };
-  ($(document)).trigger(e);
-  return equal(this.space_index, 1, '@base.page.nextSpace not called');
 });
 
 test("#processKeyPress does nothing for backspace", function() {

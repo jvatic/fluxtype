@@ -9,6 +9,12 @@ Manager = (function() {
     this.processKeyDown = __bind(this.processKeyDown, this);
     this.processKeyPress = __bind(this.processKeyPress, this);
     this.$hidden_input = ($("<textarea type='text' class='hidden-input' value='Q'></textarea>")).prependTo(this.base.$container);
+    this.events = {
+      key_press: new Event,
+      key_down: new Event,
+      key_up: new Event
+    };
+    this.base.events.manager_init.trigger(this);
     ($(document)).bind('keypress', this.processKeyPress);
     ($(document)).bind('keydown', this.processKeyDown);
     ($(document)).bind('keyup', this.processKeyUp);
@@ -25,27 +31,16 @@ Manager = (function() {
   }
 
   Manager.prototype.processKeyPress = function(e) {
-    var space;
     this.$hidden_input.val('Q');
     if (e.keyCode === KEYS.BACKSPACE) return null;
     e.charCode || (e.charCode = e.which);
-    space = this.base.page.current_space;
-    if (space && space.match(e.charCode)) {
-      space.hit();
-      return this.base.page.nextSpace();
-    } else if (space) {
-      return space.miss(e.charCode);
-    }
+    return this.events.key_press.trigger(e.charCode);
   };
 
   Manager.prototype.processKeyDown = function(e) {
-    var space;
     this.base.keyboard.selectKey(e.charCode, e.keyCode);
     if (_.include(TOUCHY_KEYS, e.keyCode)) e.preventDefault();
-    if (_.include([KEYS.BACKSPACE], e.keyCode)) {
-      space = this.base.page.current_space;
-      return space.match(e.keyCode);
-    }
+    return this.events.key_down.trigger(e.keyCode);
   };
 
   Manager.prototype.processKeyUp = function(e) {

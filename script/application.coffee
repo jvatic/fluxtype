@@ -16,6 +16,7 @@ class FluxType
   constructor: (@$container)->
     @events = {
       page_init: new Event
+      manager_init: new Event
     }
 
     @drawUI()

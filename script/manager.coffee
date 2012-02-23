@@ -3,6 +3,14 @@ class Manager
     # iPad support (tap header to enable keyboard)
     @$hidden_input = ($ "<textarea type='text' class='hidden-input' value='Q'></textarea>").prependTo @base.$container
 
+    @events = {
+      key_press: new Event
+      key_down: new Event
+      key_up: new Event
+    }
+
+    @base.events.manager_init.trigger this
+
     ($ document).bind 'keypress', @processKeyPress
     ($ document).bind 'keydown', @processKeyDown
     ($ document).bind 'keyup', @processKeyUp
@@ -19,12 +27,7 @@ class Manager
 
     e.charCode ||= e.which # IE compatibility
 
-    space = @base.page.current_space
-    if space && space.match(e.charCode)
-      space.hit()
-      @base.page.nextSpace()
-    else if space
-      space.miss(e.charCode)
+    @events.key_press.trigger e.charCode
 
   processKeyDown: (e)=>
     @base.keyboard.selectKey e.charCode, e.keyCode
@@ -32,9 +35,7 @@ class Manager
     if _.include TOUCHY_KEYS, e.keyCode
       e.preventDefault()
 
-    if _.include [KEYS.BACKSPACE], e.keyCode
-      space = @base.page.current_space
-      space.match e.keyCode
+    @events.key_down.trigger e.keyCode
 
   processKeyUp: (e)=>
     @base.keyboard.deselectKey e.charCode, e.keyCode
