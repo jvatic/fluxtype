@@ -10,10 +10,6 @@ module "Manager"
           miss: -> null
         }
       }
-      status: {
-        recordHit: => @hit_count = (@hit_count || 0) + 1
-        recordMiss: => @miss_count = (@miss_count || 0) + 1
-      }
       keyboard: {
         selectKey: (charCode, keyCode)=> @selected_key = keyCode
         deselectKey: => @selected_key = null
@@ -26,13 +22,10 @@ test "keypress within document deligates to page and status", ->
 
   ($ document).trigger e
   equal @space_index, 1, '@base.page.nextSpace called'
-  equal @hit_count, 1, '@base.state.recordHit called'
 
   @manager.base.page.current_space.match = -> false
   ($ document).trigger e
   equal @space_index, 1, '@base.page.nextSpace not called'
-  equal @hit_count, 1, '@base.state.recordHit not called'
-  equal @miss_count, 1, '@base.state.recordMiss called'
 
 test "#processKeyPress does nothing for backspace", ->
   equal @manager.processKeyPress({ keyCode: 8 }), null

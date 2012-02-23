@@ -3,7 +3,11 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 module("Status", {
   setup: function() {
     Store.clear();
-    return this.status = new Status({});
+    return this.status = new Status({
+      events: {
+        page_init: new Event
+      }
+    });
   }
 });
 
@@ -45,19 +49,19 @@ test("records wpms", function() {
   }, this), "Status#wpms.length is 2 for every 10 hits");
 });
 
-test("#wpmAvg calculates wpm average", function() {
+test("#wpmBufferAvg calculates wpm average", function() {
   var n, _i, _j;
   this.status.wpm_buffer = 4;
   for (_i = 1; _i <= 10; _i++) {
     this.status.recordHitSpeed(1);
   }
-  equal(this.status.wpmAvg(), 12, '2 words, 5 seconds each');
+  equal(this.status.wpmBufferAvg(), 12, '2 words, 5 seconds each');
   for (n = 1; n <= 10; n++) {
     this.status.recordHitSpeed(n);
   }
-  equal(this.status.wpmAvg(), 7.375, '4 words, 12, 12, 4, and 1.5 seconds respectivly');
+  equal(this.status.wpmBufferAvg(), 7.375, '4 words, 12, 12, 4, and 1.5 seconds respectivly');
   for (_j = 1; _j <= 5; _j++) {
     this.status.recordHitSpeed(2);
   }
-  return equal(this.status.wpmAvg(), 5.875, '4 words (buffer), 12, 4, 1.5, and 6 seconds respectivly');
+  return equal(this.status.wpmBufferAvg(), 5.875, '4 words (buffer), 12, 4, 1.5, and 6 seconds respectivly');
 });

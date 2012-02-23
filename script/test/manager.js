@@ -20,14 +20,6 @@ module("Manager", {
           }
         }
       },
-      status: {
-        recordHit: __bind(function() {
-          return this.hit_count = (this.hit_count || 0) + 1;
-        }, this),
-        recordMiss: __bind(function() {
-          return this.miss_count = (this.miss_count || 0) + 1;
-        }, this)
-      },
       keyboard: {
         selectKey: __bind(function(charCode, keyCode) {
           return this.selected_key = keyCode;
@@ -46,14 +38,11 @@ test("keypress within document deligates to page and status", function() {
   e.charCode = 97;
   ($(document)).trigger(e);
   equal(this.space_index, 1, '@base.page.nextSpace called');
-  equal(this.hit_count, 1, '@base.state.recordHit called');
   this.manager.base.page.current_space.match = function() {
     return false;
   };
   ($(document)).trigger(e);
-  equal(this.space_index, 1, '@base.page.nextSpace not called');
-  equal(this.hit_count, 1, '@base.state.recordHit not called');
-  return equal(this.miss_count, 1, '@base.state.recordMiss called');
+  return equal(this.space_index, 1, '@base.page.nextSpace not called');
 });
 
 test("#processKeyPress does nothing for backspace", function() {

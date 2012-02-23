@@ -17,6 +17,8 @@ module("Core", {
 });
 
 test("Compenents initialize", function() {
+  expect(4);
+  if (!this.app) return;
   ok(this.app.status, 'Status');
   ok(this.app.page, 'Page');
   ok(this.app.keyboard, 'Keyboard');

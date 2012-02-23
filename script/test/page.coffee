@@ -141,6 +141,10 @@ module "Page.Row.Space"
   setup: ->
     page = {
       $container: ($ "#application")
+      events: {
+        hit: new Event
+        miss: new Event
+      }
       config:
         font_size: 18
     }

@@ -16,6 +16,9 @@ module "Core"
     $.mockjaxClear()
 
 test "Compenents initialize", ->
+  expect 4
+  return unless @app
+
   ok @app.status   , 'Status'
   ok @app.page     , 'Page'
   ok @app.keyboard , 'Keyboard'

@@ -208,6 +208,10 @@ module("Page.Row.Space", {
     var page, row;
     page = {
       $container: $("#application"),
+      events: {
+        hit: new Event,
+        miss: new Event
+      },
       config: {
         font_size: 18
       }
