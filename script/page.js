@@ -14,6 +14,12 @@ Page = (function() {
     this.nextSpace = __bind(this.nextSpace, this);
     this._initTemplate();
     this.rows = [];
+    this.events = {
+      next_space: new Event,
+      next_page: new Event,
+      hit: new Event,
+      miss: new Event
+    };
     default_config = {
       font_size: 18,
       padding: 4,
@@ -36,6 +42,10 @@ Page = (function() {
       if (!next) next = _.first(next_row.spaces);
     }
     if (!next) return this.drawText();
+    this.events.next_space.trigger({
+      current: space,
+      next: next
+    });
     this.current_space = next;
     if (!this.current_space.typeable) this.nextSpace();
     return this.current_space.select();
@@ -58,7 +68,6 @@ Page = (function() {
   Page.prototype.drawText = function() {
     var last_space;
     this.resetRows();
-    if (this.base.hangman) this.base.hangman.upLevel();
     if (this._start_with_space === true) {
       this._start_with_space = false;
       _.first(_.first(this.rows).spaces).setSpace();
@@ -86,7 +95,8 @@ Page = (function() {
     if (last_space.typeable && !last_space.is_space) this._start_with_space = true;
     this.current_space = _.first(_.first(this.rows).spaces);
     if (!this.current_space.typeable) this.nextSpace();
-    return this.current_space.select();
+    this.current_space.select();
+    return this.events.next_page.trigger();
   };
 
   Page.prototype._initText = function(text) {
@@ -220,10 +230,12 @@ Page = (function() {
       };
 
       Space.prototype.hit = function() {
+        this.page.events.hit.trigger(this);
         return this.$element.addClass('hit');
       };
 
       Space.prototype.miss = function(charCode) {
+        this.page.events.miss.trigger(this);
         this.$element.addClass('miss');
         this.miss_space || (this.miss_space = new Page.Row.Space.MissSpace(this));
         return this.miss_space.set(String.fromCharCode(charCode));

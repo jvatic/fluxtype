@@ -4,6 +4,13 @@ class Page
 
     @rows = []
 
+    @events = {
+      next_space: new Event
+      next_page:  new Event
+      hit: new Event
+      miss: new Event
+    }
+
     default_config = {
       font_size: 18
       padding: 4
@@ -27,6 +34,11 @@ class Page
       next = _.first(next_row.spaces) unless next
     return @drawText() unless next
 
+    @events.next_space.trigger {
+      current: space
+      next: next
+    }
+
     @current_space = next
     @nextSpace() unless @current_space.typeable
 
@@ -38,9 +50,6 @@ class Page
 
   drawText: =>
     @resetRows()
-
-    if @base.hangman
-      @base.hangman.upLevel()
 
     if @_start_with_space == true
       @_start_with_space = false
@@ -65,6 +74,8 @@ class Page
     @current_space = _.first(_.first(@rows).spaces)
     @nextSpace() unless @current_space.typeable
     @current_space.select()
+
+    @events.next_page.trigger()
 
   _initText: (text)=>
     unless text
@@ -163,9 +174,11 @@ class Page
         @$element.removeClass 'active'
 
       hit: =>
+        @page.events.hit.trigger this
         @$element.addClass 'hit'
 
       miss: (charCode)=>
+        @page.events.miss.trigger this
         @$element.addClass 'miss'
 
         @miss_space ||= new Page.Row.Space.MissSpace this

@@ -84,6 +84,9 @@ Hangman = (function() {
         thresh: 6
       }
     ];
+    this.base.page.events.next_page.subscribe(this.upLevel);
+    this.base.page.events.hit.subscribe(this.hit);
+    this.base.page.events.miss.subscribe(this.miss);
   }
 
   Hangman.prototype.hit = function() {

@@ -75,6 +75,10 @@ class Hangman
       { e: @person.legs.right, thresh: 6 }
     ]
 
+    @base.page.events.next_page.subscribe @upLevel
+    @base.page.events.hit.subscribe @hit
+    @base.page.events.miss.subscribe @miss
+
   hit: =>
     @updateGameStatus()
 

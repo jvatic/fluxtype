@@ -24,11 +24,9 @@ class Manager
       space.hit()
       @base.page.nextSpace()
       @base.status.recordHit space
-      @base.hangman.hit() if @base.hangman
     else if space
       space.miss(e.charCode)
       @base.status.recordMiss space
-      @base.hangman.miss() if @base.hangman
 
   processKeyDown: (e)=>
     @base.keyboard.selectKey e.charCode, e.keyCode
