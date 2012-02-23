@@ -38,13 +38,12 @@ Manager = (function() {
   };
 
   Manager.prototype.processKeyDown = function(e) {
-    this.base.keyboard.selectKey(e.charCode, e.keyCode);
     if (_.include(TOUCHY_KEYS, e.keyCode)) e.preventDefault();
-    return this.events.key_down.trigger(e.keyCode);
+    return this.events.key_down.trigger(e.charCode, e.keyCode);
   };
 
   Manager.prototype.processKeyUp = function(e) {
-    return this.base.keyboard.deselectKey(e.charCode, e.keyCode);
+    return this.events.key_up.trigger(e.charCode, e.keyCode);
   };
 
   return Manager;
