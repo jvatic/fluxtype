@@ -23,6 +23,9 @@ FluxType = (function() {
     this.$container = $container;
     this.defaultText = __bind(this.defaultText, this);
     this.drawUI = __bind(this.drawUI, this);
+    this.events = {
+      page_init: new Event
+    };
     this.drawUI();
   }
 
@@ -34,6 +37,7 @@ FluxType = (function() {
       left: 50,
       top: 20
     });
+    this.events.page_init.trigger();
     this.keyboard = new Keyboard(this, {
       width: this.$container.width() - 100,
       height: 320

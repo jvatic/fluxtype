@@ -38,6 +38,10 @@ Status = (function() {
     this.$misses = ($("<div class='status-misses'>0.0</div>")).appendTo(this.$container);
     this.$wpm = ($("<div class='status-wpm'>0.0</div>")).appendTo(this.$container);
     this.$accuracy = ($("<div class='status-accuracy'>100</div>")).appendTo(this.$container);
+    this.base.events.page_init.subscribe(__bind(function() {
+      this.base.page.events.hit.subscribe(this.recordHit);
+      return this.base.page.events.miss.subscribe(this.recordMiss);
+    }, this));
     this.update();
   }
 

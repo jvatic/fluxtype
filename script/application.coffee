@@ -14,6 +14,10 @@ require_js {
 
 class FluxType
   constructor: (@$container)->
+    @events = {
+      page_init: new Event
+    }
+
     @drawUI()
 
   drawUI: =>
@@ -25,6 +29,7 @@ class FluxType
       left: 50
       top: 20
     }
+    @events.page_init.trigger()
 
     @keyboard = new Keyboard this, {
       width: @$container.width() - 100

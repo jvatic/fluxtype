@@ -32,6 +32,10 @@ class Status
     @$wpm       = ($ "<div class='status-wpm'>0.0</div>").appendTo @$container
     @$accuracy  = ($ "<div class='status-accuracy'>100</div>").appendTo @$container
 
+    @base.events.page_init.subscribe =>
+      @base.page.events.hit.subscribe @recordHit
+      @base.page.events.miss.subscribe @recordMiss
+
     @update()
 
   update: =>

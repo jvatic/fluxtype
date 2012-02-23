@@ -32,11 +32,9 @@ Manager = (function() {
     space = this.base.page.current_space;
     if (space && space.match(e.charCode)) {
       space.hit();
-      this.base.page.nextSpace();
-      return this.base.status.recordHit(space);
+      return this.base.page.nextSpace();
     } else if (space) {
-      space.miss(e.charCode);
-      return this.base.status.recordMiss(space);
+      return space.miss(e.charCode);
     }
   };
 
