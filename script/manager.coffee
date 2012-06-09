@@ -30,12 +30,10 @@ class Manager
     @events.key_press.trigger e.charCode
 
   processKeyDown: (e)=>
-    @base.keyboard.selectKey e.charCode, e.keyCode
-
     if _.include TOUCHY_KEYS, e.keyCode
       e.preventDefault()
 
-    @events.key_down.trigger e.keyCode
+    @events.key_down.trigger e.charCode, e.keyCode
 
   processKeyUp: (e)=>
-    @base.keyboard.deselectKey e.charCode, e.keyCode
+    @events.key_up.trigger e.charCode, e.keyCode

@@ -13,7 +13,7 @@ class Page
 
     @base.events.manager_init.subscribe (manager)=>
       manager.events.key_press.subscribe @_processKeyPress
-      manager.events.key_down.subscribe (keyCode)=>
+      manager.events.key_down.subscribe (charCode, keyCode)=>
         if _.include [KEYS.BACKSPACE], keyCode
           @current_space.match keyCode
 

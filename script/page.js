@@ -23,7 +23,7 @@ Page = (function() {
     };
     this.base.events.manager_init.subscribe(__bind(function(manager) {
       manager.events.key_press.subscribe(this._processKeyPress);
-      return manager.events.key_down.subscribe(__bind(function(keyCode) {
+      return manager.events.key_down.subscribe(__bind(function(charCode, keyCode) {
         if (_.include([KEYS.BACKSPACE], keyCode)) {
           return this.current_space.match(keyCode);
         }

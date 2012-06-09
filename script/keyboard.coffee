@@ -6,6 +6,10 @@ class Keyboard
       height: 320
     }, @config
 
+    @app.events.manager_init.subscribe (manager)=>
+      manager.events.key_down.subscribe @selectKey
+      manager.events.key_up.subscribe @deselectKey
+
     @$container = $("<div class='keyboard'></div>").appendTo @app.$container
 
     @key_types = [

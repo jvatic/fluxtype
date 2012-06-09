@@ -14,6 +14,10 @@ Keyboard = (function() {
       width: 700,
       height: 320
     }, this.config);
+    this.app.events.manager_init.subscribe(__bind(function(manager) {
+      manager.events.key_down.subscribe(this.selectKey);
+      return manager.events.key_up.subscribe(this.deselectKey);
+    }, this));
     this.$container = $("<div class='keyboard'></div>").appendTo(this.app.$container);
     this.key_types = [
       {
