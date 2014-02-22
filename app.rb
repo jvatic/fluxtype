@@ -4,6 +4,10 @@ require './helpers'
 
 APP_ROOT = File.dirname(__FILE__)
 
+configure :production do
+  require 'newrelic_rpm'
+end
+
 configure :development do |config|
   require 'sinatra/reloader'
   config.also_reload "*.rb"

@@ -1,11 +1,12 @@
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     backports (2.2.1)
     lipsum (1.2.0)
       nokogiri
     monkey-lib (0.5.4)
       backports
+    newrelic_rpm (3.7.2.195)
     nokogiri (1.5.0)
     rack (1.2.2)
     sass (3.1.1)
@@ -29,6 +30,7 @@ PLATFORMS
 
 DEPENDENCIES
   lipsum
+  newrelic_rpm
   sass
   sinatra
   sinatra-reloader
