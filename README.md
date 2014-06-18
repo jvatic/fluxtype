@@ -8,7 +8,7 @@ Please feel free to modify and adapt into
 whatever awesome project you might be working on. Pull requests are
 welcome.
 
-Be sure to see the [demo](http://fluxtype.heroku.com).
+Be sure to see the [demo](http://fluxtype.com).
 
 ## Compatibility
 
