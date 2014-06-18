@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 gem 'sinatra', :require => false
 gem 'sass'
+gem 'puma'
 
 gem 'lipsum'
 

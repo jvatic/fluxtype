@@ -71,7 +71,7 @@ module Sinatra::Helpers
       return ''
     else
       @javascript_paths.compact.sort { |a,b| a <=> b }.collect do |path|
-        if production?
+        if settings.production?
           path.embed_tag
         else
           path.include_tag
