@@ -28,7 +28,7 @@
 
     <div id='javascript'>
       <% javascript 'https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js', 'raphael.min.js' %>
-      <% if development? %>
+      <% if settings.development? %>
         <% javascript :underscore, :constants, :event, :keyboard, :page, :status, :manager, :hangman, 'store-js' %>
         <script type='text/javascript'>
           require_js = function(scripts, callback){ callback.call(null, true); }
