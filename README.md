@@ -1,4 +1,4 @@
-This software is provided under the [Creative Commons BY-NC-SA 3.0](http://creativecommons.org/licenses/by-nc-sa/3.0/) licence.
+This software is provided under the [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) licence.
 
 ## Overview
 
