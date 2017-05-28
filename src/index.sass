@@ -1,0 +1,164 @@
+@import 'mixins.sass'
+
+@font-face
+  :font-family "Vag"
+  :src url(../vendor/vaground.ttf)
+
+#header
+  :width 960px
+  :margin 10px auto 0px auto
+
+  h1
+    :font-size 38px
+    :font-style italic
+    :font-family 'Playfair Display', arial, serif
+    :color darken(white, 10%)
+
+#application
+  :position relative
+  :margin auto
+  :width 960px
+
+  #page-outer-container
+    :margin-top 20px
+    :position relative
+    :z-index 200
+
+  .status-container
+    :float right
+    :padding 4px
+    :margin-top -20px
+
+    .status-item
+      :float left
+      :margin-left 10px
+      :color darken(white, 60%)
+
+      &:after
+        :color darken(white, 20%)
+
+    .status-hits
+      @extend .status-item
+      &:after
+        :content " Hits"
+
+    .status-misses
+      @extend .status-item
+      &:after
+        :content " Misses"
+
+    .status-wpm
+      @extend .status-item
+      &:after
+        :content ' WPM'
+
+    .status-accuracy
+      @extend .status-item
+      &:after
+        :content '%'
+
+  .page-row-miss-space
+    :padding 4px
+    :border 1px solid darken(white, 15%)
+    :background darken(white, 1%)
+    :border-color lighten(red, 20%)
+    :text-align center
+    :font-weight bold
+    :color lighten(red, 10%)
+
+  .page-row-space
+    :float left
+    :padding 4px
+    :margin 1px
+    :border 1px solid darken(white, 15%)
+    :background-image url(./display_space.png)
+    @include transparent(60)
+
+    :font-size 18px
+
+    &.empty
+      :border-color darken(white, 4%)
+      :color darken(white, 40%)
+
+    &.space
+      :background darken(white, 1%)
+
+      &.hit
+        :background-color black
+        @include clear_transparent
+
+    &.hit
+      :border-color darken(white, 10%)
+
+    &.miss
+      :border-color lighten(red, 30%)
+
+    &.active
+      :border-color lighten(green, 20%)
+
+    &.first
+      :clear both
+
+    &.page-row-char
+      :background darken(white, 1%)
+      @include clear_transparent
+      :text-align center
+
+      &.skip
+        @include transparent(60)
+
+      &.hit
+        :background-color black
+        :color darken(white, 5%)
+
+  .clear
+    :clear both
+
+  .hidden-input
+    :color white
+    :border 0px
+    :position absolute
+    :background transparent
+    :top -200px
+    :width 960px
+    :height 200px
+    :resize none
+    :z-index 1
+    :cursor default
+    :overflow hidden
+
+  .input_area
+    :clear both
+    :margin-top 20px
+    :width 500px
+    :height 260px
+
+  .keyboard
+    :width 700px
+    :margin 0 auto
+    :margin-top 20px
+    :border 4px solid darken(white, 6%)
+    :padding 2px
+    @include rounded(8px)
+    @include transparent(50)
+
+    &:hover, .active
+      @include transparent(0)
+
+    .key
+      :float left
+      :margin 5px
+      :border 1px solid darken(white, 12%)
+      :text-align center
+      :font-family "Vag"
+
+      &.active
+        :border-color darken(white, 25%)
+        :background-color darken(white, 10%)
+
+#fork-github
+  :display none
+
+@media screen and (min-width: 1180px)
+  #fork-github
+    :display block

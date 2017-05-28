@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QUnit Test</title>
+
+  <% htmlWebpackPlugin.files.css.forEach(function (path) { %>
+  <link rel='stylesheet' type='text/css' href='/<%= path %>' />
+  <% }); %>
+</head>
+<body>
+  <h1 id="qunit-header">QUnit Test</h1>
+  <h2 id="qunit-banner"></h2>
+  <div id="qunit-testrunner-toolbar"></div>
+  <ol id="qunit-tests"></ol>
+  <div id="qunit-fixture">
+    <div id='application'></div>
+  </div>
+
+  <% htmlWebpackPlugin.files.js.forEach(function (path) { %>
+  <script type='application/javascript' src='/<%= path %>'></script>
+  <% }); %>
+</body>
+</html>

@@ -1,4 +1,6 @@
-vendor/gems
-.sass-cache
-log/
-tmp/
+/vendor/gems
+/.sass-cache
+/log/
+/tmp/
+/dist
+/node_modules
