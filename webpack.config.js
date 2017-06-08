@@ -5,6 +5,15 @@ var ManifestPlugin = require('webpack-manifest-plugin');
 
 var extractCSS = new ExtractTextPlugin({filename: '[name].[contenthash].css'});
 
+var SRC_DIR = path.resolve(__dirname, 'src');
+var TEST_DIR = path.resolve(__dirname, 'test');
+var VENDOR_DIR = path.resolve(__dirname, 'vendor');
+var DIST_DIR = path.resolve(__dirname, 'dist');
+
+var pathHasParent = function (path, parentPath) {
+	return path.substr(0, parentPath.length) === parentPath;
+};
+
 module.exports = {
 	entry: {
 		'main': ['./src/index.js', './src/index.sass'],
@@ -12,7 +21,7 @@ module.exports = {
 	},
 	output: {
 		filename: '[name].[hash].js',
-		path: path.resolve(__dirname, 'dist')
+		path: DIST_DIR
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
@@ -36,9 +45,9 @@ module.exports = {
 		loaders: [
 			{
 				loader: 'babel-loader',
-				include: [
-					path.resolve(__dirname, 'src')
-				],
+				include: function (path) {
+					return pathHasParent(path, SRC_DIR) || pathHasParent(path, TEST_DIR);
+				},
 				test: /\.js$/,
 				query: {
 					presets: ['es2015'],
@@ -47,25 +56,25 @@ module.exports = {
 			},
 			{
 				test: /\.(png)$/,
-				include: [
-					path.resolve(__dirname, 'src')
-				],
+				include: function (path) {
+					return pathHasParent(path, SRC_DIR);
+				},
 				loader: 'file-loader?name=[name].[ext]'
 			},
 			{
 				test: /\.(eot|svg|ttf|woff|woff2)$/,
-				include: [
-					path.resolve(__dirname, 'vendor')
-				],
+				include: function (path) {
+					return pathHasParent(path, VENDOR_DIR);
+				},
 				loader: 'file-loader?name=[name].[ext]'
 			},
 			{
 				loader: extractCSS.extract({ use: [
 					{ loader: 'css-loader', options: { sourceMap: true } }
 				]}),
-				include: [
-					path.resolve(__dirname, 'vendor')
-				],
+				include: function (path) {
+					return pathHasParent(path, VENDOR_DIR);
+				},
 				test: /\.css$/
 			},
 			{
@@ -73,9 +82,9 @@ module.exports = {
 					{ loader: 'css-loader', options: { sourceMap: true } },
 					{ loader: 'sass-loader', options: { sourceMap: true } }
 				]}),
-				include: [
-					path.resolve(__dirname, 'src')
-				],
+				include: function (path) {
+					return pathHasParent(path, SRC_DIR);
+				},
 				test: /\.sass/
 			},
 		]
