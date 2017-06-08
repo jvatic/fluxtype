@@ -1,13 +1,12 @@
-import Page from '../src/page';
+import { Page, Row, Space } from '../src/page';
 import Event from '../src/event';
-
-var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+import { last as __last } from '../src/util';
 
 const TEXT = "Donec eget enim sit amet quam ullamcorper fermentum hendrerit in vel turpis.\nDonec libero rhoncus tortor sagittis consequat bibendum mauris consequat.";
 
 QUnit.module("Page", {
   setup: function() {
-    return this.page = new Page({
+    this.page = new Page({
       $container: $("#application"),
       events: {
         manager_init: new Event
@@ -31,7 +30,7 @@ QUnit.test("#nextSpace selects next typeable space", function() {
 });
 
 QUnit.test("#nextSpace re-draws text when no more spaces", function() {
-  this.page.current_space = _.last(_.last(this.page.rows).spaces);
+  this.page.current_space = __last(__last(this.page.rows).spaces);
   this.page.nextSpace();
   return equal(this.page.current_space.index, 0);
 });
@@ -77,13 +76,13 @@ QUnit.test("#drawText populates spaces", function() {
 
 QUnit.test("#drawText buffers words", function() {
   equal(this.page.rows[0].spaces[0].char.text, 'D');
-  ok(_.last(this.page.rows[0].spaces).is_space, 'is_space');
+  ok(__last(this.page.rows[0].spaces).is_space, 'is_space');
   this.page.drawText();
   equal(this.page.rows[0].spaces[0].char.text, 'e');
   equal(this.page.rows[0].spaces[7].char.text, 't');
   ok(this.page.rows[0].spaces[8].is_space);
   ok(!this.page.rows[0].spaces[9].typeable);
-  ok(!_.last(this.page.rows[0].spaces).typeable);
+  ok(!__last(this.page.rows[0].spaces).typeable);
   this.page.drawText();
   equal(this.page.rows[0].spaces[0].char.text, 'a');
   equal(this.page.rows[0].spaces[1].char.text, 'm');
@@ -118,14 +117,14 @@ QUnit.test("#drawText fetches more text when no more words", function() {
   return equal(this.page.rows[0].spaces[0].char.text, "D");
 });
 
-QUnit.module("Page.Row", {
+QUnit.module("Page Row", {
   setup: function() {
-    this.row = new Page.Row({
+    this.row = new Row({
       config: {
         num_columns: 10
       }
     }, 0);
-    this.next_row = new Page.Row({
+    this.next_row = new Row({
       config: {
         num_columns: 10
       }
@@ -191,12 +190,12 @@ QUnit.test("#push(char, char, ...) prepends a space to next row if no more space
 
 QUnit.test("#push(char, char, ...) raises an exception if more chars than spaces", function() {
   this.row.space_index = 10;
-  return raises(__bind(function() {
+  return raises(()=> {
     return this.row.push({
       typeable: true,
       text: "X"
     });
-  }, this));
+  });
 });
 
 QUnit.test("#destroy removes each space.$element", function() {
@@ -208,7 +207,7 @@ QUnit.test("#destroy removes each space.$element", function() {
   return ok(!$last_element.is(':visible'));
 });
 
-QUnit.module("Page.Row.Space", {
+QUnit.module("Page Space", {
   setup: function() {
     var page, row;
     page = {
@@ -224,7 +223,7 @@ QUnit.module("Page.Row.Space", {
     row = {
       space_index: 0
     };
-    this.space = new Page.Row.Space(page, row, 0);
+    this.space = new Space(page, row, 0);
     this.space.row.spaces = [this.space];
     return this.space.page.rows = [this.space.row];
   }

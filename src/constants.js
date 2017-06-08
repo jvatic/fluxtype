@@ -1,18 +1,19 @@
-export const KEYS = {
-  BACKSPACE: 8,
-  TAB: 9,
-  RETURN: 13,
-  ESCAPE: 27,
-  SPACE: 32,
-  LEFT: 37,
-  UP: 38,
-  RIGHT: 39,
-  DOWN: 40,
-  CAPSLOCK: 20,
-  SHIFT: 16,
-  CONTROL: 17,
-  OPTION: 18,
-  COMMAND: 91
+const KEYS = {
+	BACKSPACE: 8,
+	TAB: 9,
+	RETURN: 13,
+	ESCAPE: 27,
+	SPACE: 32,
+	LEFT: 37,
+	UP: 38,
+	RIGHT: 39,
+	DOWN: 40,
+	CAPSLOCK: 20,
+	SHIFT: 16,
+	CONTROL: 17,
+	OPTION: 18,
+	COMMAND: 91
 };
 
+export { KEYS };
 export const TOUCHY_KEYS = [KEYS.TAB, KEYS.BACKSPACE];

@@ -8,7 +8,7 @@ QUnit.module("Core", {
     return $.mockjax({
       url: '/text',
       responseText: TEXT,
-      responseTime: 0
+      responseTime: 100
     });
   },
   teardown: function() {
@@ -26,6 +26,8 @@ QUnit.test("Compenents initialize", function() {
 });
 
 QUnit.asyncTest("#defaultText calls /text endpoint", function() {
+  expect(1);
+  if (!this.app) return start();
   return this.app.defaultText(function(text) {
     equal(text, TEXT);
     return start();
