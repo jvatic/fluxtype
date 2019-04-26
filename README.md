@@ -1,6 +1,6 @@
 This software is provided under the [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) licence.
 
-Be sure to see the [demo](http://fluxtype.com).
+Be sure to see the [demo](http://fluxtype.jesse.io).
 
 ## Compatibility
 
